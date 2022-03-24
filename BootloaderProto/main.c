@@ -36,11 +36,15 @@ uint8_t sram_array[256] = {0};
 uint8_t sram_array_full = 0;
 volatile uint8_t abort_flag = 0;
 
-//HANDSHAKE STRINGS
-char handshake_call[] = "c++ is great!   ";
-const char handshake_response[] = "YES!";
+const char handshake_call[17] = "who_is_there?   ";
+const char handshake_response[] = "lordy";
+char update_call[] = "pdate";
 
-char update_call[]= "pdate";
+
+
+
+
+
 const char update_response[] = "sure";
 
 //HEADERS FOR INCOMING USART TRANSMISSIONS
@@ -98,7 +102,7 @@ void LCD_Action( unsigned char cmnd )
 
 void LCD_Init (void)
 {
-	LCD_DPin = 0xFF;		//Control LCD Pins (D4-D7)
+	//LCD_DPin = 0xFF;		//Control LCD Pins (D4-D7)
 	_delay_ms(15);			//Wait before LCD activation
 	LCD_Action(0x02);		//4-Bit Control
 	LCD_Action(0x28);       //Control Matrix @ 4-Bit
@@ -174,7 +178,7 @@ void SPI_SRAM_ByteWrite(uint32_t sram_address, uint8_t data)
 	uint32_t address_byte_M = ((sram_address >>8)  & 0xff);
 	uint32_t address_byte_L = (sram_address & 0xff);
 	
-	PORTB &= ~0x08;												//chip select pin LOW activates SRAM
+	PORTB &= ~0x02;												//chip select pin LOW activates SRAM
 	//_delay_us(10);
 	SPDR = 0x02;												//selects "byte only - operation" of sram
 	while (!(SPSR & (1<<SPIF)));
@@ -187,7 +191,7 @@ void SPI_SRAM_ByteWrite(uint32_t sram_address, uint8_t data)
 	SPDR = data;												//stores cv/gate-data byte in 24 bit address
 	while (!(SPSR & (1<<SPIF)));
 	//_delay_us(10);
-	PORTB |= 0x08;												//chip select pin HIGH deactivates SRAM
+	PORTB |= 0x02;												//chip select pin HIGH deactivates SRAM
 }
 
 
@@ -198,7 +202,7 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 	uint32_t address_byte_M = ((sram_address >>8)  & 0xff);
 	uint32_t address_byte_L = (sram_address & 0xff);
 	
-	PORTB &= ~0x08;												//chip select pin LOW activates SRAM
+	PORTB &= ~0x02;												//chip select pin LOW activates SRAM
 	
 	SPDR = 0x03;
 	while (!(SPSR & (1<<SPIF)));
@@ -213,7 +217,7 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 	while (!(SPSR & (1<<SPIF)));
 	uint8_t data = SPDR;										//reads data from address
 	
-	PORTB |= 0x08;												//chip select pin HIGH deactivates SRAM
+	PORTB |= 0x02;												//chip select pin HIGH deactivates SRAM
 	
 	return(data);
 }
@@ -279,12 +283,12 @@ _Bool flash_content_ok()
 	LCD_Printpos(0,0, "validating flash");
 	LCD_Printpos(1,0, "please wait     ");
 	
-	uint16_t flash_EOF = (byte_ctr >> 1);
+	uint32_t flash_EOF = (byte_ctr >> 1);
 	uint8_t lsb = 0;
 	uint8_t msb = 0;
 	uint32_t sram_address = 0;
 	
-	/*
+	
 	for(uint16_t i = 0; i < flash_EOF; ++i){
 		
 		
@@ -297,21 +301,24 @@ _Bool flash_content_ok()
 		}
 		
 	}
-	*/
+	
 	
 	return 1;
 	
 }
 
-void write_firmware_to_flash(const uint32_t byte_ctr)
+void write_firmware_to_flash(uint32_t byte_ctr)
 {
-	uint32_t flash_EOF = ((byte_ctr >> 1) + 2048);  // => /2, and 2 pages safety
+	uint32_t flash_EOF = (byte_ctr );  // => /2, and 2 pages safety
 	uint32_t sram_address = 0;
 	uint32_t flash_address = 0;
 	cli();
 	 boot_rww_enable();
-	
-	 while(flash_address < flash_EOF ){
+     
+    
+     LCD_Showval16(byte_ctr/1000);
+	 _delay_ms(2000);
+	 while(flash_address < byte_ctr ){
 		
 		boot_page_erase_safe(sram_address) ;
 		boot_spm_busy_wait();  
@@ -333,8 +340,8 @@ void write_firmware_to_flash(const uint32_t byte_ctr)
 		
 	}
 	
-	if(flash_content_ok()){
-	
+	//if(flash_content_ok()){
+	if(1){
 		boot_rww_enable ();
 	
 	
@@ -377,15 +384,15 @@ int main(void)
 	
 	
 	//SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
-	
+	PINA = 0x00;
 	DDRA = 0x0f;
 	PORTA = 0x00;
-	DDRB = 0xbf;
-	DDRD = 0xfe;
-	PORTD = 0x01; //internal pull-up rx-pin
-	
+	DDRB = 0xbe;
+	DDRD = 0x7e;
+	//PORTD = 0x01; //internal pull-up rx-pin
+	DDRC = 0xfe;
 	PORTB = 0xbf;
-	
+	PORTC = 0x00;
 	PORTA = 13;  // set address for record button
 	
 	//INIT INTERFACES 
@@ -396,20 +403,15 @@ int main(void)
 	
 	
 	//ACTIVATE INTERRUPT
-	sei();
+	
+    sei();
 	
 	
 	
 	//CHECK IF SRAM IS ONLINE
-	/*
-	SPI_SRAM_ByteWrite(0x000002, 0xfa);
 	
-	if (SPI_SRAM_ByteRead(0x000002)==0xfa){
-		
-		LCD_Printpos(0, 0, "bootloader ready" );
-		LCD_Printpos(1, 0, "SRAM ready...   " );
-	}
-	*/
+	
+	USART_Init(21);
 	
 	
 	
@@ -417,14 +419,14 @@ int main(void)
 		//MAIN LOOP
 		
 		/* Interrupt Vektoren verbiegen */
-		
 		char sregtemp = SREG;
 		temp = MCUCR;
 		MCUCR = temp | (1<<IVCE);
 		MCUCR = temp | (1<<IVSEL);
-		SREG = sregtemp;
+		SREG = sregtemp;	
 		
-		LCD_Printpos(0, 0, "updater ready    "  );
+		
+		LCD_Printpos(0, 0, "updater ready      "  );
 		LCD_Printpos(1, 0, "start lordylink      " );
 		
 		
@@ -439,25 +441,23 @@ int main(void)
 				_delay_ms(200);								   //give lordylink some time for startup
 				USART_transmit_string(handshake_response);
 				strcpy(handshake_array, "                ");   //delete input buffer			
-				LCD_Printpos(0,0, "lordylink      ");
-				LCD_Printpos(1,0, "connected      ");
+				LCD_Printpos(0,0, "lordylink        ");
+				LCD_Printpos(1,0, "connected        ");
 				
 			
 			}
-			_delay_ms(100);
+           
+			
 			//UPDATE CALL EVALUATION
 			if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
 				_delay_ms(200);								 
 				USART_transmit_string(update_response);
 				strcpy(update_array, "     ");   //overwrite input buffer
-				LCD_Printpos(0,0, "updater      ");
-				LCD_Printpos(1,0, "enabled     ");
+				LCD_Printpos(0,0, "updater        ");
+				LCD_Printpos(1,0, "enabled        ");
 				
 				
 			}
-			
-			
-			
 			
 			
 			
@@ -467,10 +467,11 @@ int main(void)
 			
 		} //end while(1) 
 	}else{
-		
-		start();
+	
+	start();
 	
 	}
+
 
 
 
@@ -488,7 +489,7 @@ ISR(USART0_RX_vect)
 	//HANDSHAKE MESSAGE
 	
 	if (header == usart_handshake_message){  // if incoming data is of handshake type...
-		for(int i = 0; i < 16; ++i)
+		for(uint8_t i = 0; i < 16; ++i)
 			handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main application
 		
 	}
