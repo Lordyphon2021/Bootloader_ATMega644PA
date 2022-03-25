@@ -393,8 +393,8 @@ int main(void)
 				_delay_ms(200);								   //give lordylink some time for startup
 				USART_transmit_string(handshake_response);
 				strcpy(handshake_array, "                ");   //delete input buffer			
-				LCD_Printpos(0,0, "lordylink        ");
-				LCD_Printpos(1,0, "connected        ");
+				LCD_Printpos(0,0, "lordylink          ");
+				LCD_Printpos(1,0, "connected          ");
 				
 			
 			}
@@ -405,8 +405,8 @@ int main(void)
 				_delay_ms(200);								 
 				USART_transmit_string(update_response);
 				strcpy(update_array, "     ");   //overwrite input buffer
-				LCD_Printpos(0,0, "updater        ");
-				LCD_Printpos(1,0, "enabled        ");
+				LCD_Printpos(0,0, "updater          ");
+				LCD_Printpos(1,0, "enabled          ");
 				
 				
 			}
@@ -567,7 +567,7 @@ ISR(USART0_RX_vect)
 			
 			LCD_Clear();
 			LCD_Printpos(0,0, "burning flash       ");
-			
+			LCD_Printpos(1,0, "don't turn off       ");
 			write_firmware_to_flash();
 			
 			
