@@ -58,7 +58,7 @@ const char usart_request_data_dump = 's';
 const char usart_clock_hi = '+';
 const char usart_clock_low = '-';
 const char usart_reset_address = '§';
-
+const char usart_hexfile_eof = '#';
 
 //ENUMS
 enum checksum_status{is_error, is_ok};
@@ -67,7 +67,7 @@ enum checksum_status{is_error, is_ok};
 _Bool display_flag = 0;
 volatile _Bool checksum_status = is_error;
 uint32_t animation_ctr = 0;
-volatile uint32_t byte_ctr = 0;
+volatile uint32_t record_ctr = 0;
 _Bool send_sram_flag = 0;
 
 
@@ -146,15 +146,6 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-}
-
-
-
-void LCD_Showval16(int val) //display hex values
-{
-	char showval [16];
-	itoa (val,showval,16);
-	LCD_Print(showval);
 }
 
 
@@ -275,50 +266,20 @@ void (*start)( void ) = 0x0000;  //jump to main app
 //void (*boot)( void ) = 0x7800;
 
 
-_Bool flash_content_ok()
-{
-	
-	_delay_ms(100);
-	LCD_Clear();
-	LCD_Printpos(0,0, "validating flash");
-	LCD_Printpos(1,0, "please wait     ");
-	
-	uint32_t flash_EOF = (byte_ctr >> 1);
-	uint8_t lsb = 0;
-	uint8_t msb = 0;
-	uint32_t sram_address = 0;
-	
-	
-	for(uint16_t i = 0; i < flash_EOF; ++i){
-		
-		
-		lsb =  SPI_SRAM_ByteRead(sram_address);
-		msb =  SPI_SRAM_ByteRead(sram_address+1);
-		sram_address +=2;
-		
-		if(pgm_read_word(i) != (lsb << 8 | msb)){
-			return 0;
-		}
-		
-	}
-	
-	
-	return 1;
-	
-}
 
-void write_firmware_to_flash(uint32_t byte_ctr)
+
+void write_firmware_to_flash()
 {
-	uint32_t flash_EOF = (byte_ctr );  // => /2, and 2 pages safety
+	
 	uint32_t sram_address = 0;
 	uint32_t flash_address = 0;
+    const uint32_t app_section_eof = 61440; //next address is bootloader-section!!!
 	cli();
 	 boot_rww_enable();
      
     
-     LCD_Showval16(byte_ctr/1000);
-	 _delay_ms(2000);
-	 while(flash_address < byte_ctr ){
+     
+	 while(sram_address < app_section_eof ){  //write complete app section
 		
 		boot_page_erase_safe(sram_address) ;
 		boot_spm_busy_wait();  
@@ -340,8 +301,7 @@ void write_firmware_to_flash(uint32_t byte_ctr)
 		
 	}
 	
-	//if(flash_content_ok()){
-	if(1){
+	
 		boot_rww_enable ();
 	
 	
@@ -351,17 +311,9 @@ void write_firmware_to_flash(uint32_t byte_ctr)
 		LCD_Printpos(0,0, "please restart");
 		LCD_Printpos(1,0, "lordyphon      ");
 		_delay_ms(1000);
-		//start();
 		
-	}
-	else{
-		boot_rww_enable ();
-		LCD_Clear();
-		LCD_Printpos(0,0, "Flash Error");
-		LCD_Printpos(1,0, "try again");
-		_delay_ms(1000);
 		
-	}
+	
 	
  
 }
@@ -502,7 +454,7 @@ ISR(USART0_RX_vect)
 	//IF CONFIRMATION MESSAGE ISN'T RECOGNIZED BY LORDYLINK, CHECKSUM STATUS WILL BE RE-EVALUATED AND CONFIRMATION MESSAGE IS TRANSMITTED AGAIN.
 	
 	else if(header == usart_hexfile_message){   //if message is hexfile....
-		
+		    ++record_ctr;
 			//PARSE INCOMING MESSAGE
 		
 			uint8_t data_section_size = USART_receive_byte();						//this is the amount of databytes that will be written into the SRAM
@@ -545,12 +497,13 @@ ISR(USART0_RX_vect)
 			uint16_t vec_sum = 0;												//local helper variable for checksum calculation
 			uint8_t checksum_from_file = hex_buffer_array[hex_record_size-1];   //read checksum from file
 		
-			for(int i = 0; i < hex_record_size - 1; ++i)						// accumulate record for checksum calculation
+			for(int i = 0; i < hex_record_size - 1; ++i){						// accumulate record for checksum calculation
 				vec_sum += hex_buffer_array[ i ];
-		
+                
+            }		    
 			uint8_t checksum_calculated =  ~(vec_sum & 0x00ff ) + 0x01;		// actual checksum calculation
 		
-			if(checksum_calculated == checksum_from_file){						// compare checksums
+			if(checksum_calculated == checksum_from_file ){						// compare checksums
 				checksum_status = is_ok;										// set boolean flag for error handling
 				
 				for(int i = 0; i < data_section_size; ++i){						//if checksum is ok, write data-section to SRAM
@@ -561,7 +514,7 @@ ISR(USART0_RX_vect)
 					}while(SPI_SRAM_ByteRead(address) !=  hex_buffer_array[ i + 4 ]);  //additional safety-guard: write to address and read content back. if this doesn't work, sram is probably broken
 				
 					++address;	
-					++byte_ctr;	
+						
 				}//end for
 				USART_transmit_string("ok");									// confirm transmission: lordylink thread blocks until confirmation is either "ok" or "er". checksum "ok" => SRAM will be written, next record will be sent
 																				// "er" => current record will be sent again. if neither "ok" nor "er" is detected by lordylink, rx_error_header will be sent
@@ -614,24 +567,25 @@ ISR(USART0_RX_vect)
 			
 			LCD_Clear();
 			LCD_Printpos(0,0, "burning flash       ");
-			LCD_Printpos(1,0, "don't turn off      ");
-			write_firmware_to_flash(byte_ctr);
+			
+			write_firmware_to_flash();
 			
 			
 		
 	}	
-	else if(header == usart_reset_address){
-		address = 0;
-		sram_address = 0;
-		byte_ctr = 0;
-		checksum_status = is_error;
-		
-	}
+	//else if(header == usart_reset_address){
+		//address = 0;
+		//sram_address = 0;
+		//byte_ctr = 0;
+		//checksum_status = is_error;
+		//
+	//}
 	else if (header == usart_update_message){  // if incoming data is of update handshake type...
 		for(int i = 0; i < 5; ++i)
 		update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main application
 		
 	}
+    
 	
 	
 }
