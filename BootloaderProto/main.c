@@ -1,7 +1,7 @@
 
 
 
-//SETUP CPU FREQ AND BAUD RATE FOR SERIAL COMMUNICATION
+//SETUP CPU FREQ 
 #define F_CPU 20000000UL
 
 
@@ -39,15 +39,9 @@ volatile uint8_t abort_flag = 0;
 const char handshake_call[17] = "who_is_there?   ";
 const char handshake_response[] = "lordy";
 char update_call[] = "pdate";
-
-
-
-
-
-
 const char update_response[] = "sure";
 
-//HEADERS FOR INCOMING USART TRANSMISSIONS
+//ISR-HEADERS FOR INCOMING USART TRANSMISSIONS
 
 const char usart_handshake_message = '!';
 const char usart_update_message = 'u';
@@ -71,16 +65,12 @@ volatile uint32_t record_ctr = 0;
 _Bool send_sram_flag = 0;
 
 
-	
 //DEFINES FOR ATMEGA PORTS AND PINS
 #define LCD_Port PORTC			//Define LCD Port
 #define LCD_DPin  DDRC			//Define 4-Bit Pins (PD4-PD7 at PORT D)
 #define RSPIN PC2				//RS Pin
 #define ENPIN PC3
 #define rec_button (PINA &= 0x10)
-
-
-
 
 
 
@@ -171,7 +161,7 @@ void SPI_SRAM_ByteWrite(uint32_t sram_address, uint8_t data)
 	
 	PORTB &= ~0x02;												//chip select pin LOW activates SRAM
 	//_delay_us(10);
-	SPDR = 0x02;												//selects "byte only - operation" of sram
+	SPDR = 0x02;												//selects "byte - operation" of sram
 	while (!(SPSR & (1<<SPIF)));
 	SPDR = (uint8_t)address_byte_H;
 	while (!(SPSR & (1<<SPIF)));
@@ -179,10 +169,10 @@ void SPI_SRAM_ByteWrite(uint32_t sram_address, uint8_t data)
 	while (!(SPSR & (1<<SPIF)));
 	SPDR = (uint8_t)address_byte_L;
 	while (!(SPSR & (1<<SPIF)));
-	SPDR = data;												//stores cv/gate-data byte in 24 bit address
+	SPDR = data;												
 	while (!(SPSR & (1<<SPIF)));
 	//_delay_us(10);
-	PORTB |= 0x02;												//chip select pin HIGH deactivates SRAM
+	PORTB |= 0x02;												
 }
 
 
@@ -193,11 +183,10 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 	uint32_t address_byte_M = ((sram_address >>8)  & 0xff);
 	uint32_t address_byte_L = (sram_address & 0xff);
 	
-	PORTB &= ~0x02;												//chip select pin LOW activates SRAM
-	
+	PORTB &= ~0x02;												
 	SPDR = 0x03;
 	while (!(SPSR & (1<<SPIF)));
-	SPDR = (uint8_t)address_byte_H;								//casting uint32_t to uint8_t
+	SPDR = (uint8_t)address_byte_H;								
 	while (!(SPSR & (1<<SPIF)));
 	SPDR = (uint8_t)address_byte_M;
 	while (!(SPSR & (1<<SPIF)));
@@ -208,7 +197,7 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 	while (!(SPSR & (1<<SPIF)));
 	uint8_t data = SPDR;										//reads data from address
 	
-	PORTB |= 0x02;												//chip select pin HIGH deactivates SRAM
+	PORTB |= 0x02;												
 	
 	return(data);
 }
@@ -263,11 +252,11 @@ uint8_t USART_receive_byte(void)
 
 
 void (*start)( void ) = 0x0000;  //jump to main app
-//void (*boot)( void ) = 0x7800;
 
 
 
 
+//if all checksums are correct, this is called to copy the firmware from sram to boot section
 void write_firmware_to_flash()
 {
 	
@@ -312,10 +301,6 @@ void write_firmware_to_flash()
 		LCD_Printpos(1,0, "lordyphon      ");
 		_delay_ms(1000);
 		
-		
-	
-	
- 
 }
 
 
@@ -327,13 +312,6 @@ int main(void)
 	
 	unsigned char temp;       
 	       
-	
-	
-	
-	
-	
-	
-	
 	
 	//SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
 	PINA = 0x00;
@@ -367,10 +345,10 @@ int main(void)
 	
 	
 	
-	if(rec_button){
+	if(rec_button){   //boot section only entered if REC button is pressed during power-up
 		//MAIN LOOP
 		
-		/* Interrupt Vektoren verbiegen */
+		// set interrupt vector for boot section
 		char sregtemp = SREG;
 		temp = MCUCR;
 		MCUCR = temp | (1<<IVCE);
@@ -412,22 +390,13 @@ int main(void)
 			}
 			
 			
-			
-			
-			
-			
-			
 		} //end while(1) 
-	}else{
+	
+    }else{  // go directly to app section
 	
 	start();
 	
 	}
-
-
-
-
-
 
 } // end main 
 
@@ -442,7 +411,7 @@ ISR(USART0_RX_vect)
 	
 	if (header == usart_handshake_message){  // if incoming data is of handshake type...
 		for(uint8_t i = 0; i < 16; ++i)
-			handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main application
+			handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
 		
 	}
 	//HEXFILE MESSAGE - INCOMING RECORD
@@ -454,43 +423,19 @@ ISR(USART0_RX_vect)
 	//IF CONFIRMATION MESSAGE ISN'T RECOGNIZED BY LORDYLINK, CHECKSUM STATUS WILL BE RE-EVALUATED AND CONFIRMATION MESSAGE IS TRANSMITTED AGAIN.
 	
 	else if(header == usart_hexfile_message){   //if message is hexfile....
-		    ++record_ctr;
+		    ++record_ctr;  //keep track...
 			//PARSE INCOMING MESSAGE
 		
-			uint8_t data_section_size = USART_receive_byte();						//this is the amount of databytes that will be written into the SRAM
-			uint8_t hex_record_size = data_section_size + 5;				// add start bytes and checksum to data section length for total size of message
+			uint8_t data_section_size = USART_receive_byte();	//this is the amount of databytes that will be written into the SRAM
+			uint8_t hex_record_size = data_section_size + 5;	// add start bytes and checksum to data section length for total size of message
 		
-			hex_buffer_array[0] = data_section_size;						//buffer starts with data_section_size, header ':' will be discarded
+			hex_buffer_array[0] = data_section_size;			//buffer starts with data_section_size, header ':' will be discarded
 		
-			for(int i = 1; i < hex_record_size ; ++i )						// get rest of message data
+			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
 				hex_buffer_array[ i ] = USART_receive_byte();
-			
-			
-			
 			
 			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
 		
-			switch(animation_ctr){											// display animation, tells user that all is going well
-				case 1:
-					LCD_Printpos(0,0, "reading file     "); 
-					LCD_Printpos(1,0, "please wait      "); 
-					break;
-				
-				case 120:
-					LCD_Printpos(1,0, "  please wait    ");
-					break;
-				
-				case 240:
-					LCD_Printpos(1,0, "    please wait ");
-					break;
-				
-				case 360:
-					animation_ctr = 0; 
-					break;
-			}//end switch
-			animation_ctr++;
-		
-			
 			//THIS PART CALCULATES CHECKSUM FROM MESSAGE
 			//AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
 			
@@ -516,9 +461,9 @@ ISR(USART0_RX_vect)
 					++address;	
 						
 				}//end for
-				USART_transmit_string("ok");									// confirm transmission: lordylink thread blocks until confirmation is either "ok" or "er". checksum "ok" => SRAM will be written, next record will be sent
-																				// "er" => current record will be sent again. if neither "ok" nor "er" is detected by lordylink, rx_error_header will be sent
-																				//to reevaluate checksum via flag variable "checksum_is"
+				USART_transmit_string("ok");				// confirm transmission: lordylink thread blocks until confirmation is either "ok" or "er". checksum "ok" => SRAM will be written, next record will be sent
+															// "er" => current record will be sent again. if neither "ok" nor "er" is detected by lordylink, rx_error_header will be sent
+															//to reevaluate checksum via flag variable "checksum_status"
 			}//end if(checksum calculated....	
 			
 			else if( checksum_calculated != checksum_from_file){
@@ -531,6 +476,26 @@ ISR(USART0_RX_vect)
 				animation_ctr  = 0;
 				USART_transmit_string("er");										
 			}
+            
+            switch(animation_ctr){	// display animation, tells user all is going well
+                case 1:
+                LCD_Printpos(0,0, "reading file     ");
+                LCD_Printpos(1,0, "please wait      ");
+                break;
+                
+                case 120:
+                LCD_Printpos(1,0, "  please wait    ");
+                break;
+                
+                case 240:
+                LCD_Printpos(1,0, "    please wait ");
+                break;
+                
+                case 360:
+                animation_ctr = 0;
+                break;
+            }//end switch
+            animation_ctr++;
 	} // end else if(header == usart_hexfile_message)
 	
 	//THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
@@ -541,14 +506,14 @@ ISR(USART0_RX_vect)
 		if(checksum_status == is_ok)											    // evaluating last checksum again...
 			USART_transmit_string("ok");	
 			
-		else																		// if error => record will be sent again, otherwise SRAM will have been correctly written
+		else																		// if error => record will be sent again, otherwise SRAM entry is correct
 			USART_transmit_string("er");
 	}
 	else if(header == usart_request_data_dump){
-		{
+		
 			sram_address = 0;
 			send_sram_flag = 1;
-		}
+		
 	}
 	else if(header == usart_clock_hi ){	//clock for sram dump, TODO: block for checksum calc
 		clk = 1;
@@ -558,10 +523,7 @@ ISR(USART0_RX_vect)
 	}
 	
 	else if(header == usart_hexfile_send_complete){							//hexfile transfer is complete
-		
-			
-			
-			LCD_Clear();
+		    LCD_Clear();
 			LCD_Printpos(0,0, "file complete      ");
 			_delay_ms(700);
 			
@@ -569,20 +531,11 @@ ISR(USART0_RX_vect)
 			LCD_Printpos(0,0, "burning flash       ");
 			LCD_Printpos(1,0, "don't turn off       ");
 			write_firmware_to_flash();
-			
-			
-		
 	}	
-	//else if(header == usart_reset_address){
-		//address = 0;
-		//sram_address = 0;
-		//byte_ctr = 0;
-		//checksum_status = is_error;
-		//
-	//}
-	else if (header == usart_update_message){  // if incoming data is of update handshake type...
+	
+	else if (header == usart_update_message){  // if incoming data is an update handshake 
 		for(int i = 0; i < 5; ++i)
-		update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main application
+		    update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
 		
 	}
     
