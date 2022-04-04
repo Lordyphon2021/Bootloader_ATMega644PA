@@ -195,7 +195,7 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 	
 	SPDR = 0xff;
 	while (!(SPSR & (1<<SPIF)));
-	uint8_t data = SPDR;										//reads data from address
+	uint8_t data = SPDR;	//reads data from address
 	
 	PORTB |= 0x02;												
 	
@@ -208,8 +208,6 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 //USART INTERFACE INITIALISATION
 void USART_Init( uint16_t ubrr)
 {
-	
-	
 	UBRR0H = (uint8_t)((ubrr>>8) & 0xff);
 	UBRR0L = (uint8_t)ubrr;
 	UCSR0B |= (1<<TXEN0); 
@@ -219,18 +217,16 @@ void USART_Init( uint16_t ubrr)
 	UCSR0C = (1<<USBS0)|(3 << UCSZ00);	
 	UCSR0B |= (1<<RXEN0)|(1<<RXCIE0);
 	set_sleep_mode(SLEEP_MODE_IDLE);
-		
 }
 
 //SERIAL SEND AND RECEIVE FUNCTIONS
 
 void USART_transmit_byte( uint8_t data )							
 {
-	while ( !(  UCSR0A & (1<<UDRE0 ) ) );
+	while ( !(  UCSR0A & (1<<UDRE0 ) ) )
+    ;
 	UDR0 = data;
 }
-
-
 
 
 void USART_transmit_string( const char* message )
@@ -254,8 +250,6 @@ uint8_t USART_receive_byte(void)
 void (*start)( void ) = 0x0000;  //jump to main app
 
 
-
-
 //if all checksums are correct, this is called to copy the firmware from sram to boot section
 void write_firmware_to_flash()
 {
@@ -266,53 +260,43 @@ void write_firmware_to_flash()
 	cli();
 	 boot_rww_enable();
      
-    
-     
-	 while(sram_address < app_section_eof ){  //write complete app section
+    while(sram_address < app_section_eof ){  //write complete app section
 		
-		boot_page_erase_safe(sram_address) ;
+		boot_page_erase_safe(sram_address) ; //AVR-MACROS, not functions
 		boot_spm_busy_wait();  
 		
 		for(int i = 0; i < 128; ++i){
-			uint16_t lsb =  SPI_SRAM_ByteRead(sram_address);
+			uint16_t lsb =  SPI_SRAM_ByteRead(sram_address);  //read 2 bytes from sram
 			uint8_t msb =  SPI_SRAM_ByteRead(sram_address + 1 );
-			uint16_t data = (msb << 8)  | lsb;
-			boot_page_fill_safe(sram_address, data);
+			uint16_t data = (msb << 8)  | lsb;      //mask into 16bit int
+			boot_page_fill_safe(sram_address, data); //fill boot page
 			sram_address += 2;
 		}
 		
-		
-			boot_page_write_safe(flash_address);
-			boot_spm_busy_wait();  
+		boot_page_write_safe(flash_address);  //write page
+		boot_spm_busy_wait();  
 			
-		
-			flash_address += 256;
-		
+		flash_address += 256;   //go to next page address
 	}
 	
+	boot_rww_enable ();
 	
-		boot_rww_enable ();
-	
-	
-		sram_address = 0;
-		_delay_ms(100);
-		LCD_Clear();
-		LCD_Printpos(0,0, "please restart");
-		LCD_Printpos(1,0, "lordyphon      ");
-		_delay_ms(1000);
+    sram_address = 0;
+	_delay_ms(100);
+	LCD_Clear();
+	LCD_Printpos(0,0, "please restart");
+	LCD_Printpos(1,0, "lordyphon      ");
+	_delay_ms(1000);
 		
 }
 
-
 //MAIN FUNCTION
-
 
 int main(void)
 {
 	
 	unsigned char temp;       
 	       
-	
 	//SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
 	PINA = 0x00;
 	DDRA = 0x0f;
@@ -326,7 +310,7 @@ int main(void)
 	PORTA = 13;  // set address for record button
 	
 	//INIT INTERFACES 
-	USART_Init(21);  // UBRR = (F_CPU/(16*BAUD))-1 
+	USART_Init(21);  // UBRR = (F_CPU/(16*BAUD))-1   // initialize with correct baud rate
 	SPI_MasterInit();
 	LCD_Init();									
 	_delay_ms(500);
@@ -337,16 +321,7 @@ int main(void)
     sei();
 	
 	
-	
-	//CHECK IF SRAM IS ONLINE
-	
-	
-	USART_Init(21);
-	
-	
-	
 	if(rec_button){   //boot section only entered if REC button is pressed during power-up
-		//MAIN LOOP
 		
 		// set interrupt vector for boot section
 		char sregtemp = SREG;
@@ -355,17 +330,12 @@ int main(void)
 		MCUCR = temp | (1<<IVSEL);
 		SREG = sregtemp;	
 		
-		
 		LCD_Printpos(0, 0, "updater ready      "  );
 		LCD_Printpos(1, 0, "start lordylink      " );
-		
-		
-		
 		
 		while(1)  //main loop
 		{
 				
-			
 			//HANDSHAKE CALL EVALUATION
 			if(strcmp(handshake_array, handshake_call) == 0){  //if call is correct, response will be sent
 				_delay_ms(200);								   //give lordylink some time for startup
@@ -373,11 +343,8 @@ int main(void)
 				strcpy(handshake_array, "                ");   //delete input buffer			
 				LCD_Printpos(0,0, "lordylink          ");
 				LCD_Printpos(1,0, "connected          ");
-				
-			
 			}
            
-			
 			//UPDATE CALL EVALUATION
 			if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
 				_delay_ms(200);								 
@@ -386,15 +353,13 @@ int main(void)
 				LCD_Printpos(0,0, "updater          ");
 				LCD_Printpos(1,0, "enabled          ");
 				
-				
 			}
-			
 			
 		} //end while(1) 
 	
     }else{  // go directly to app section
 	
-	start();
+	    start();
 	
 	}
 
@@ -405,7 +370,6 @@ int main(void)
 ISR(USART0_RX_vect)
 {
 	header = USART_receive_byte();  //header will determine, which kind of message is arriving (following if/else paths)
-	
 	
 	//HANDSHAKE MESSAGE
 	
@@ -495,13 +459,14 @@ ISR(USART0_RX_vect)
                 animation_ctr = 0;
                 break;
             }//end switch
+            
             animation_ctr++;
-	} // end else if(header == usart_hexfile_message)
+	
+    } // end else if(header == usart_hexfile_message)
 	
 	//THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
 	
 	else if(header == usart_rx_error_hexrecord){									//lordylink didn't "understand" last confirmation	
-		
 		
 		if(checksum_status == is_ok)											    // evaluating last checksum again...
 			USART_transmit_string("ok");	
@@ -539,8 +504,6 @@ ISR(USART0_RX_vect)
 		
 	}
     
-	
-	
 }
  
  
