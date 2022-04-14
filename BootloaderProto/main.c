@@ -232,7 +232,7 @@ void USART_transmit_byte( uint8_t data )
 void USART_transmit_string( const char* message )
 {
 	
-	for( int idx = 0; idx != strlen( message ); ++idx )
+	for( uint8_t idx = 0; idx != strlen( message ); ++idx )
 		USART_transmit_byte(message[idx]);
 	
 }
@@ -303,7 +303,7 @@ int main(void)
 	PORTA = 0x00;
 	DDRB = 0xbe;
 	DDRD = 0x7e;
-	//PORTD = 0x01; //internal pull-up rx-pin
+	PORTD = 0x01; //internal pull-up rx-pin
 	DDRC = 0xfe;
 	PORTB = 0xbf;
 	PORTC = 0x00;
@@ -344,7 +344,7 @@ int main(void)
 				LCD_Printpos(0,0, "lordylink          ");
 				LCD_Printpos(1,0, "connected          ");
 			}
-           
+            _delay_ms(100);
 			//UPDATE CALL EVALUATION
 			if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
 				_delay_ms(200);								 
@@ -399,7 +399,26 @@ ISR(USART0_RX_vect)
 				hex_buffer_array[ i ] = USART_receive_byte();
 			
 			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
-		
+		     switch(animation_ctr){	// display animation, tells user all is going well
+    		     case 1:
+    		     LCD_Printpos(0,0, "reading file     ");
+    		     LCD_Printpos(1,0, "please wait      ");
+    		     break;
+    		 
+    		     case 120:
+    		     LCD_Printpos(1,0, "  please wait    ");
+    		     break;
+    		 
+    		     case 240:
+    		     LCD_Printpos(1,0, "    please wait ");
+    		     break;
+    		 
+    		     case 360:
+    		     animation_ctr = 0;
+    		     break;
+		     }//end switch
+		 
+		     animation_ctr++;
 			//THIS PART CALCULATES CHECKSUM FROM MESSAGE
 			//AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
 			
@@ -441,26 +460,7 @@ ISR(USART0_RX_vect)
 				USART_transmit_string("er");										
 			}
             
-            switch(animation_ctr){	// display animation, tells user all is going well
-                case 1:
-                LCD_Printpos(0,0, "reading file     ");
-                LCD_Printpos(1,0, "please wait      ");
-                break;
-                
-                case 120:
-                LCD_Printpos(1,0, "  please wait    ");
-                break;
-                
-                case 240:
-                LCD_Printpos(1,0, "    please wait ");
-                break;
-                
-                case 360:
-                animation_ctr = 0;
-                break;
-            }//end switch
-            
-            animation_ctr++;
+           
 	
     } // end else if(header == usart_hexfile_message)
 	
@@ -479,12 +479,6 @@ ISR(USART0_RX_vect)
 			sram_address = 0;
 			send_sram_flag = 1;
 		
-	}
-	else if(header == usart_clock_hi ){	//clock for sram dump, TODO: block for checksum calc
-		clk = 1;
-	}
-	else if(header == usart_clock_low){
-		clk = 0;
 	}
 	
 	else if(header == usart_hexfile_send_complete){							//hexfile transfer is complete
