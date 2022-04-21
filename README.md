@@ -1,7 +1,7 @@
 # Bootloader_ATMega644PA
 
 This bootloader only works with the "Lordyphon" Ribbon Controller prototype and its onboard 23LC1024 SRAM.
-As a safety concept, the firmware data will be checked for validity and buffered on the SRAM before being flashed onto the controller.
+As a safety concept, the firmware data will be checked for validity and is buffered on the SRAM before being flashed onto the controller.
 
 1. During power-up the RECORD - button must be pressed to enter the boot-section of the uC otherwise Lordyphon starts main application.
 
