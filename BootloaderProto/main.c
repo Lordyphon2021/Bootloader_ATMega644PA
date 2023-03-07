@@ -40,6 +40,7 @@ const char handshake_call[17] = "who_is_there?   ";
 const char handshake_response[] = "lordy";
 char update_call[] = "pdate";
 const char update_response[] = "sure";
+volatile uint8_t flash_flag = 0;
 
 //ISR-HEADERS FOR INCOMING USART TRANSMISSIONS
 
@@ -247,7 +248,11 @@ uint8_t USART_receive_byte(void)
 }
 
 
-void (*start)( void ) = 0x0000;  //jump to main app
+void (*start)(  ) = 0x0000;  //jump to main app
+
+
+
+
 
 
 //if all checksums are correct, this is called to copy the firmware from sram to boot section
@@ -284,9 +289,13 @@ void write_firmware_to_flash()
     sram_address = 0;
 	_delay_ms(100);
 	LCD_Clear();
-	LCD_Printpos(0,0, "please restart");
+	LCD_Printpos(0,0, "rebooting");
 	LCD_Printpos(1,0, "lordyphon      ");
 	_delay_ms(1000);
+    
+    
+    
+
 		
 }
 
@@ -295,7 +304,9 @@ void write_firmware_to_flash()
 int main(void)
 {
 	
-	unsigned char temp;       
+	
+    
+    unsigned char temp;       
 	       
 	//SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
 	PINA = 0x00;
@@ -319,6 +330,8 @@ int main(void)
 	//ACTIVATE INTERRUPT
 	
     sei();
+    
+    
 	
 	
 	if(rec_button){   //boot section only entered if REC button is pressed during power-up
@@ -354,6 +367,20 @@ int main(void)
 				LCD_Printpos(1,0, "enabled          ");
 				
 			}
+            if(flash_flag == 1)
+            {
+                write_firmware_to_flash();
+                
+                
+                cli();
+                temp = MCUCR;
+                MCUCR = temp | (1<<IVCE);
+                MCUCR = temp & ~(1<<IVSEL);
+                
+                
+                start();
+                
+            }                
 			
 		} //end while(1) 
 	
@@ -362,6 +389,7 @@ int main(void)
 	    start();
 	
 	}
+    
 
 } // end main 
 
@@ -401,19 +429,27 @@ ISR(USART0_RX_vect)
 			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
 		     switch(animation_ctr){	// display animation, tells user all is going well
     		     case 1:
-    		     LCD_Printpos(0,0, "reading file     ");
-    		     LCD_Printpos(1,0, "please wait      ");
+    		     LCD_Printpos(0,0, "receiving data     ");
+    		     LCD_Printpos(1,0, "...                   ");
     		     break;
     		 
-    		     case 120:
-    		     LCD_Printpos(1,0, "  please wait    ");
+    		     case 100:
+    		     LCD_Printpos(1,0, "   ...                 ");
     		     break;
     		 
-    		     case 240:
-    		     LCD_Printpos(1,0, "    please wait ");
+    		     case 200:
+    		     LCD_Printpos(1,0, "      ...             ");
     		     break;
+                 
+                 case 300:
+                 LCD_Printpos(1,0, "         ...            ");
+                 break;
+                 
+                 case 400:
+                 LCD_Printpos(1,0, "            ...          ");
+                 break;
     		 
-    		     case 360:
+    		     case 500:
     		     animation_ctr = 0;
     		     break;
 		     }//end switch
@@ -483,13 +519,15 @@ ISR(USART0_RX_vect)
 	
 	else if(header == usart_hexfile_send_complete){							//hexfile transfer is complete
 		    LCD_Clear();
-			LCD_Printpos(0,0, "file complete      ");
+			LCD_Printpos(0,0, "complete              ");
 			_delay_ms(700);
 			
 			LCD_Clear();
-			LCD_Printpos(0,0, "burning flash       ");
+			LCD_Printpos(0,0, "writing firmware       ");
 			LCD_Printpos(1,0, "don't turn off       ");
-			write_firmware_to_flash();
+            flash_flag = 1;
+			
+            //start();
 	}	
 	
 	else if (header == usart_update_message){  // if incoming data is an update handshake 

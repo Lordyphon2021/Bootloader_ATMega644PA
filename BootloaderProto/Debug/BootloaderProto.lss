@@ -3,31 +3,31 @@ BootloaderProto.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         00000180  00800100  0000f95c  000009f0  2**0
+  0 .data         000001b6  00800100  0000f9f6  00000a8a  2**0
                   CONTENTS, ALLOC, LOAD, DATA
-  1 .text         0000095c  0000f000  0000f000  00000094  2**1
+  1 .text         000009f6  0000f000  0000f000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000006c  00800280  00800280  00000b70  2**0
+  2 .bss          0000006d  008002b6  008002b6  00000c40  2**0
                   ALLOC
-  3 .comment      00000030  00000000  00000000  00000b70  2**0
+  3 .comment      00000030  00000000  00000000  00000c40  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000ba0  2**2
+  4 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000c70  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 00000090  00000000  00000000  00000be0  2**0
+  5 .debug_aranges 00000090  00000000  00000000  00000cb0  2**0
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   00001d72  00000000  00000000  00000c70  2**0
+  6 .debug_info   00001e3a  00000000  00000000  00000d40  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000a12  00000000  00000000  000029e2  2**0
+  7 .debug_abbrev 00000a17  00000000  00000000  00002b7a  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   00000ae5  00000000  00000000  000033f4  2**0
+  8 .debug_line   00000b34  00000000  00000000  00003591  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  000001fc  00000000  00000000  00003edc  2**2
+  9 .debug_frame  000001fc  00000000  00000000  000040c8  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    00000770  00000000  00000000  000040d8  2**0
+ 10 .debug_str    0000077b  00000000  00000000  000042c4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000fea  00000000  00000000  00004848  2**0
+ 11 .debug_loc    00001050  00000000  00000000  00004a3f  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f0  00000000  00000000  00005832  2**0
+ 12 .debug_ranges 000000f0  00000000  00000000  00005a8f  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -53,7 +53,7 @@ Disassembly of section .text:
     f044:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
     f048:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
     f04c:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
-    f050:	0c 94 c0 7a 	jmp	0xf580	; 0xf580 <__vector_20>
+    f050:	0c 94 d8 7a 	jmp	0xf5b0	; 0xf5b0 <__vector_20>
     f054:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
     f058:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
     f05c:	0c 94 5b 78 	jmp	0xf0b6	; 0xf0b6 <__bad_interrupt>
@@ -77,18 +77,18 @@ Disassembly of section .text:
     f088:	12 e0       	ldi	r17, 0x02	; 2
     f08a:	a0 e0       	ldi	r26, 0x00	; 0
     f08c:	b1 e0       	ldi	r27, 0x01	; 1
-    f08e:	ec e5       	ldi	r30, 0x5C	; 92
+    f08e:	e6 ef       	ldi	r30, 0xF6	; 246
     f090:	f9 ef       	ldi	r31, 0xF9	; 249
     f092:	02 c0       	rjmp	.+4      	; 0xf098 <__do_copy_data+0x10>
     f094:	05 90       	lpm	r0, Z+
     f096:	0d 92       	st	X+, r0
-    f098:	a0 38       	cpi	r26, 0x80	; 128
+    f098:	a6 3b       	cpi	r26, 0xB6	; 182
     f09a:	b1 07       	cpc	r27, r17
     f09c:	d9 f7       	brne	.-10     	; 0xf094 <__do_copy_data+0xc>
 
 0000f09e <__do_clear_bss>:
-    f09e:	22 e0       	ldi	r18, 0x02	; 2
-    f0a0:	a0 e8       	ldi	r26, 0x80	; 128
+    f09e:	23 e0       	ldi	r18, 0x03	; 3
+    f0a0:	a6 eb       	ldi	r26, 0xB6	; 182
     f0a2:	b2 e0       	ldi	r27, 0x02	; 2
     f0a4:	01 c0       	rjmp	.+2      	; 0xf0a8 <.do_clear_bss_start>
 
@@ -96,11 +96,11 @@ Disassembly of section .text:
     f0a6:	1d 92       	st	X+, r1
 
 0000f0a8 <.do_clear_bss_start>:
-    f0a8:	ac 3e       	cpi	r26, 0xEC	; 236
+    f0a8:	a3 32       	cpi	r26, 0x23	; 35
     f0aa:	b2 07       	cpc	r27, r18
     f0ac:	e1 f7       	brne	.-8      	; 0xf0a6 <.do_clear_bss_loop>
     f0ae:	0e 94 15 7a 	call	0xf42a	; 0xf42a <main>
-    f0b2:	0c 94 ac 7c 	jmp	0xf958	; 0xf958 <_exit>
+    f0b2:	0c 94 f9 7c 	jmp	0xf9f2	; 0xf9f2 <_exit>
 
 0000f0b6 <__bad_interrupt>:
     f0b6:	0c 94 00 78 	jmp	0xf000	; 0xf000 <__vectors>
@@ -393,7 +393,7 @@ Disassembly of section .text:
     f2de:	08 95       	ret
 
 0000f2e0 <write_firmware_to_flash>:
-void (*start)( void ) = 0x0000;  //jump to main app
+
 
 
 //if all checksums are correct, this is called to copy the firmware from sram to boot section
@@ -629,7 +629,7 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
     f3ee:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f3f2:	85 e1       	ldi	r24, 0x15	; 21
+    f3f2:	80 e1       	ldi	r24, 0x10	; 16
     f3f4:	91 e0       	ldi	r25, 0x01	; 1
     f3f6:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 	#else
@@ -647,10 +647,10 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
     f406:	e1 f7       	brne	.-8      	; 0xf400 <write_firmware_to_flash+0x120>
     f408:	00 c0       	rjmp	.+0      	; 0xf40a <write_firmware_to_flash+0x12a>
     f40a:	00 00       	nop
-	LCD_Clear();
-	LCD_Printpos(0,0, "please restart");
-	LCD_Printpos(1,0, "lordyphon      ");
-	_delay_ms(1000);
+    
+    
+    
+
 		
 }
     f40c:	df 91       	pop	r29
@@ -670,9 +670,9 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
     f428:	08 95       	ret
 
 0000f42a <main>:
-{
 	
-	unsigned char temp;       
+    
+    unsigned char temp;       
 	       
 	//SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
 	PINA = 0x00;
@@ -728,6 +728,8 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
 	
     sei();
     f46e:	78 94       	sei
+    
+    
 	
 	
 	if(rec_button){   //boot section only entered if REC button is pressed during power-up
@@ -736,7 +738,7 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
     f474:	80 b9       	out	0x00, r24	; 0
     f476:	88 23       	and	r24, r24
     f478:	09 f4       	brne	.+2      	; 0xf47c <main+0x52>
-    f47a:	7a c0       	rjmp	.+244    	; 0xf570 <main+0x146>
+    f47a:	92 c0       	rjmp	.+292    	; 0xf5a0 <main+0x176>
 		
 		// set interrupt vector for boot section
 		char sregtemp = SREG;
@@ -764,7 +766,7 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f492:	85 e2       	ldi	r24, 0x25	; 37
+    f492:	80 e2       	ldi	r24, 0x20	; 32
     f494:	91 e0       	ldi	r25, 0x01	; 1
     f496:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
@@ -777,10 +779,10 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
     f49c:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f4a0:	89 e3       	ldi	r24, 0x39	; 57
+    f4a0:	84 e3       	ldi	r24, 0x34	; 52
     f4a2:	91 e0       	ldi	r25, 0x01	; 1
     f4a4:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f4a8:	11 c0       	rjmp	.+34     	; 0xf4cc <main+0xa2>
+    f4a8:	16 c0       	rjmp	.+44     	; 0xf4d6 <main+0xac>
     f4aa:	2f e7       	ldi	r18, 0x7F	; 127
     f4ac:	8a e1       	ldi	r24, 0x1A	; 26
     f4ae:	96 e0       	ldi	r25, 0x06	; 6
@@ -798,914 +800,1020 @@ void LCD_Printpos (char row, char pos, char *str)  //Write on a specific locatio
 			if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
     f4bc:	60 e0       	ldi	r22, 0x00	; 0
     f4be:	71 e0       	ldi	r23, 0x01	; 1
-    f4c0:	8c ec       	ldi	r24, 0xCC	; 204
-    f4c2:	92 e0       	ldi	r25, 0x02	; 2
-    f4c4:	0e 94 a3 7c 	call	0xf946	; 0xf946 <strcmp>
+    f4c0:	83 e0       	ldi	r24, 0x03	; 3
+    f4c2:	93 e0       	ldi	r25, 0x03	; 3
+    f4c4:	0e 94 f0 7c 	call	0xf9e0	; 0xf9e0 <strcmp>
     f4c8:	89 2b       	or	r24, r25
-    f4ca:	69 f1       	breq	.+90     	; 0xf526 <main+0xfc>
+    f4ca:	91 f1       	breq	.+100    	; 0xf530 <main+0x106>
+				strcpy(update_array, "     ");   //overwrite input buffer
+				LCD_Printpos(0,0, "updater          ");
+				LCD_Printpos(1,0, "enabled          ");
+				
+			}
+            if(flash_flag == 1)
+    f4cc:	80 91 c2 02 	lds	r24, 0x02C2	; 0x8002c2 <flash_flag>
+    f4d0:	81 30       	cpi	r24, 0x01	; 1
+    f4d2:	09 f4       	brne	.+2      	; 0xf4d6 <main+0xac>
+    f4d4:	56 c0       	rjmp	.+172    	; 0xf582 <main+0x158>
 		
 		while(1)  //main loop
 		{
 				
 			//HANDSHAKE CALL EVALUATION
 			if(strcmp(handshake_array, handshake_call) == 0){  //if call is correct, response will be sent
-    f4cc:	6e e6       	ldi	r22, 0x6E	; 110
-    f4ce:	72 e0       	ldi	r23, 0x02	; 2
-    f4d0:	82 ed       	ldi	r24, 0xD2	; 210
-    f4d2:	92 e0       	ldi	r25, 0x02	; 2
-    f4d4:	0e 94 a3 7c 	call	0xf946	; 0xf946 <strcmp>
-    f4d8:	89 2b       	or	r24, r25
-    f4da:	39 f7       	brne	.-50     	; 0xf4aa <main+0x80>
-    f4dc:	2f ef       	ldi	r18, 0xFF	; 255
-    f4de:	84 e3       	ldi	r24, 0x34	; 52
-    f4e0:	9c e0       	ldi	r25, 0x0C	; 12
-    f4e2:	21 50       	subi	r18, 0x01	; 1
-    f4e4:	80 40       	sbci	r24, 0x00	; 0
-    f4e6:	90 40       	sbci	r25, 0x00	; 0
-    f4e8:	e1 f7       	brne	.-8      	; 0xf4e2 <main+0xb8>
-    f4ea:	00 c0       	rjmp	.+0      	; 0xf4ec <main+0xc2>
-    f4ec:	00 00       	nop
+    f4d6:	64 ea       	ldi	r22, 0xA4	; 164
+    f4d8:	72 e0       	ldi	r23, 0x02	; 2
+    f4da:	89 e0       	ldi	r24, 0x09	; 9
+    f4dc:	93 e0       	ldi	r25, 0x03	; 3
+    f4de:	0e 94 f0 7c 	call	0xf9e0	; 0xf9e0 <strcmp>
+    f4e2:	89 2b       	or	r24, r25
+    f4e4:	11 f7       	brne	.-60     	; 0xf4aa <main+0x80>
+    f4e6:	2f ef       	ldi	r18, 0xFF	; 255
+    f4e8:	84 e3       	ldi	r24, 0x34	; 52
+    f4ea:	9c e0       	ldi	r25, 0x0C	; 12
+    f4ec:	21 50       	subi	r18, 0x01	; 1
+    f4ee:	80 40       	sbci	r24, 0x00	; 0
+    f4f0:	90 40       	sbci	r25, 0x00	; 0
+    f4f2:	e1 f7       	brne	.-8      	; 0xf4ec <main+0xc2>
+    f4f4:	00 c0       	rjmp	.+0      	; 0xf4f6 <main+0xcc>
+    f4f6:	00 00       	nop
 				_delay_ms(200);								   //give lordylink some time for startup
 				USART_transmit_string(handshake_response);
-    f4ee:	88 e6       	ldi	r24, 0x68	; 104
-    f4f0:	92 e0       	ldi	r25, 0x02	; 2
-    f4f2:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
+    f4f8:	8e e9       	ldi	r24, 0x9E	; 158
+    f4fa:	92 e0       	ldi	r25, 0x02	; 2
+    f4fc:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
 				strcpy(handshake_array, "                ");   //delete input buffer			
-    f4f6:	81 e1       	ldi	r24, 0x11	; 17
-    f4f8:	eb e9       	ldi	r30, 0x9B	; 155
-    f4fa:	f1 e0       	ldi	r31, 0x01	; 1
-    f4fc:	a2 ed       	ldi	r26, 0xD2	; 210
-    f4fe:	b2 e0       	ldi	r27, 0x02	; 2
-    f500:	01 90       	ld	r0, Z+
-    f502:	0d 92       	st	X+, r0
-    f504:	8a 95       	dec	r24
-    f506:	e1 f7       	brne	.-8      	; 0xf500 <main+0xd6>
+    f500:	81 e1       	ldi	r24, 0x11	; 17
+    f502:	e0 eb       	ldi	r30, 0xB0	; 176
+    f504:	f1 e0       	ldi	r31, 0x01	; 1
+    f506:	a9 e0       	ldi	r26, 0x09	; 9
+    f508:	b3 e0       	ldi	r27, 0x03	; 3
+    f50a:	01 90       	ld	r0, Z+
+    f50c:	0d 92       	st	X+, r0
+    f50e:	8a 95       	dec	r24
+    f510:	e1 f7       	brne	.-8      	; 0xf50a <main+0xe0>
 
 
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
-    f508:	80 e8       	ldi	r24, 0x80	; 128
-    f50a:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f512:	80 e8       	ldi	r24, 0x80	; 128
+    f514:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f50e:	8f e4       	ldi	r24, 0x4F	; 79
-    f510:	91 e0       	ldi	r25, 0x01	; 1
-    f512:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f518:	8a e4       	ldi	r24, 0x4A	; 74
+    f51a:	91 e0       	ldi	r25, 0x01	; 1
+    f51c:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f516:	80 ec       	ldi	r24, 0xC0	; 192
-    f518:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f520:	80 ec       	ldi	r24, 0xC0	; 192
+    f522:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f51c:	83 e6       	ldi	r24, 0x63	; 99
-    f51e:	91 e0       	ldi	r25, 0x01	; 1
-    f520:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f524:	c2 cf       	rjmp	.-124    	; 0xf4aa <main+0x80>
-    f526:	2f ef       	ldi	r18, 0xFF	; 255
-    f528:	84 e3       	ldi	r24, 0x34	; 52
-    f52a:	9c e0       	ldi	r25, 0x0C	; 12
-    f52c:	21 50       	subi	r18, 0x01	; 1
-    f52e:	80 40       	sbci	r24, 0x00	; 0
-    f530:	90 40       	sbci	r25, 0x00	; 0
-    f532:	e1 f7       	brne	.-8      	; 0xf52c <main+0x102>
-    f534:	00 c0       	rjmp	.+0      	; 0xf536 <main+0x10c>
-    f536:	00 00       	nop
+    f526:	8e e5       	ldi	r24, 0x5E	; 94
+    f528:	91 e0       	ldi	r25, 0x01	; 1
+    f52a:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f52e:	bd cf       	rjmp	.-134    	; 0xf4aa <main+0x80>
+    f530:	2f ef       	ldi	r18, 0xFF	; 255
+    f532:	84 e3       	ldi	r24, 0x34	; 52
+    f534:	9c e0       	ldi	r25, 0x0C	; 12
+    f536:	21 50       	subi	r18, 0x01	; 1
+    f538:	80 40       	sbci	r24, 0x00	; 0
+    f53a:	90 40       	sbci	r25, 0x00	; 0
+    f53c:	e1 f7       	brne	.-8      	; 0xf536 <main+0x10c>
+    f53e:	00 c0       	rjmp	.+0      	; 0xf540 <main+0x116>
+    f540:	00 00       	nop
 			}
             _delay_ms(100);
 			//UPDATE CALL EVALUATION
 			if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
 				_delay_ms(200);								 
 				USART_transmit_string(update_response);
-    f538:	83 e6       	ldi	r24, 0x63	; 99
-    f53a:	92 e0       	ldi	r25, 0x02	; 2
-    f53c:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
+    f542:	89 e9       	ldi	r24, 0x99	; 153
+    f544:	92 e0       	ldi	r25, 0x02	; 2
+    f546:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
 				strcpy(update_array, "     ");   //overwrite input buffer
-    f540:	86 e0       	ldi	r24, 0x06	; 6
-    f542:	e6 ea       	ldi	r30, 0xA6	; 166
-    f544:	f1 e0       	ldi	r31, 0x01	; 1
-    f546:	ac ec       	ldi	r26, 0xCC	; 204
-    f548:	b2 e0       	ldi	r27, 0x02	; 2
-    f54a:	01 90       	ld	r0, Z+
-    f54c:	0d 92       	st	X+, r0
-    f54e:	8a 95       	dec	r24
-    f550:	e1 f7       	brne	.-8      	; 0xf54a <main+0x120>
+    f54a:	86 e0       	ldi	r24, 0x06	; 6
+    f54c:	eb eb       	ldi	r30, 0xBB	; 187
+    f54e:	f1 e0       	ldi	r31, 0x01	; 1
+    f550:	a3 e0       	ldi	r26, 0x03	; 3
+    f552:	b3 e0       	ldi	r27, 0x03	; 3
+    f554:	01 90       	ld	r0, Z+
+    f556:	0d 92       	st	X+, r0
+    f558:	8a 95       	dec	r24
+    f55a:	e1 f7       	brne	.-8      	; 0xf554 <main+0x12a>
 
 
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
-    f552:	80 e8       	ldi	r24, 0x80	; 128
-    f554:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f55c:	80 e8       	ldi	r24, 0x80	; 128
+    f55e:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f558:	87 e7       	ldi	r24, 0x77	; 119
-    f55a:	91 e0       	ldi	r25, 0x01	; 1
-    f55c:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f562:	82 e7       	ldi	r24, 0x72	; 114
+    f564:	91 e0       	ldi	r25, 0x01	; 1
+    f566:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f560:	80 ec       	ldi	r24, 0xC0	; 192
-    f562:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f56a:	80 ec       	ldi	r24, 0xC0	; 192
+    f56c:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f566:	89 e8       	ldi	r24, 0x89	; 137
-    f568:	91 e0       	ldi	r25, 0x01	; 1
-    f56a:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f56e:	ae cf       	rjmp	.-164    	; 0xf4cc <main+0xa2>
+    f570:	84 e8       	ldi	r24, 0x84	; 132
+    f572:	91 e0       	ldi	r25, 0x01	; 1
+    f574:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+				strcpy(update_array, "     ");   //overwrite input buffer
+				LCD_Printpos(0,0, "updater          ");
+				LCD_Printpos(1,0, "enabled          ");
+				
+			}
+            if(flash_flag == 1)
+    f578:	80 91 c2 02 	lds	r24, 0x02C2	; 0x8002c2 <flash_flag>
+    f57c:	81 30       	cpi	r24, 0x01	; 1
+    f57e:	09 f0       	breq	.+2      	; 0xf582 <main+0x158>
+    f580:	aa cf       	rjmp	.-172    	; 0xf4d6 <main+0xac>
+            {
+                write_firmware_to_flash();
+    f582:	0e 94 70 79 	call	0xf2e0	; 0xf2e0 <write_firmware_to_flash>
+                
+                
+                cli();
+    f586:	f8 94       	cli
+                temp = MCUCR;
+    f588:	85 b7       	in	r24, 0x35	; 53
+                MCUCR = temp | (1<<IVCE);
+    f58a:	98 2f       	mov	r25, r24
+    f58c:	91 60       	ori	r25, 0x01	; 1
+    f58e:	95 bf       	out	0x35, r25	; 53
+                MCUCR = temp & ~(1<<IVSEL);
+    f590:	8d 7f       	andi	r24, 0xFD	; 253
+    f592:	85 bf       	out	0x35, r24	; 53
+                
+                
+                start();
+    f594:	e0 91 b6 02 	lds	r30, 0x02B6	; 0x8002b6 <__data_end>
+    f598:	f0 91 b7 02 	lds	r31, 0x02B7	; 0x8002b7 <__data_end+0x1>
+    f59c:	09 95       	icall
+    f59e:	9b cf       	rjmp	.-202    	; 0xf4d6 <main+0xac>
 			
 		} //end while(1) 
 	
     }else{  // go directly to app section
 	
 	    start();
-    f570:	e0 91 80 02 	lds	r30, 0x0280	; 0x800280 <__data_end>
-    f574:	f0 91 81 02 	lds	r31, 0x0281	; 0x800281 <__data_end+0x1>
-    f578:	09 95       	icall
+    f5a0:	e0 91 b6 02 	lds	r30, 0x02B6	; 0x8002b6 <__data_end>
+    f5a4:	f0 91 b7 02 	lds	r31, 0x02B7	; 0x8002b7 <__data_end+0x1>
+    f5a8:	09 95       	icall
 	
 	}
+    
 
 } // end main 
-    f57a:	80 e0       	ldi	r24, 0x00	; 0
-    f57c:	90 e0       	ldi	r25, 0x00	; 0
-    f57e:	08 95       	ret
+    f5aa:	80 e0       	ldi	r24, 0x00	; 0
+    f5ac:	90 e0       	ldi	r25, 0x00	; 0
+    f5ae:	08 95       	ret
 
-0000f580 <__vector_20>:
+0000f5b0 <__vector_20>:
 
 //Interrupt Service Routine is in sleep mode unless USART message is received
 
 ISR(USART0_RX_vect)
 {
-    f580:	1f 92       	push	r1
-    f582:	0f 92       	push	r0
-    f584:	0f b6       	in	r0, 0x3f	; 63
-    f586:	0f 92       	push	r0
-    f588:	11 24       	eor	r1, r1
-    f58a:	ef 92       	push	r14
-    f58c:	ff 92       	push	r15
-    f58e:	0f 93       	push	r16
-    f590:	1f 93       	push	r17
-    f592:	2f 93       	push	r18
-    f594:	3f 93       	push	r19
-    f596:	4f 93       	push	r20
-    f598:	5f 93       	push	r21
-    f59a:	6f 93       	push	r22
-    f59c:	7f 93       	push	r23
-    f59e:	8f 93       	push	r24
-    f5a0:	9f 93       	push	r25
-    f5a2:	af 93       	push	r26
-    f5a4:	bf 93       	push	r27
-    f5a6:	cf 93       	push	r28
-    f5a8:	df 93       	push	r29
-    f5aa:	ef 93       	push	r30
-    f5ac:	ff 93       	push	r31
+    f5b0:	1f 92       	push	r1
+    f5b2:	0f 92       	push	r0
+    f5b4:	0f b6       	in	r0, 0x3f	; 63
+    f5b6:	0f 92       	push	r0
+    f5b8:	11 24       	eor	r1, r1
+    f5ba:	ef 92       	push	r14
+    f5bc:	ff 92       	push	r15
+    f5be:	0f 93       	push	r16
+    f5c0:	1f 93       	push	r17
+    f5c2:	2f 93       	push	r18
+    f5c4:	3f 93       	push	r19
+    f5c6:	4f 93       	push	r20
+    f5c8:	5f 93       	push	r21
+    f5ca:	6f 93       	push	r22
+    f5cc:	7f 93       	push	r23
+    f5ce:	8f 93       	push	r24
+    f5d0:	9f 93       	push	r25
+    f5d2:	af 93       	push	r26
+    f5d4:	bf 93       	push	r27
+    f5d6:	cf 93       	push	r28
+    f5d8:	df 93       	push	r29
+    f5da:	ef 93       	push	r30
+    f5dc:	ff 93       	push	r31
 }
 
 
 uint8_t USART_receive_byte(void)
 {
 	while (!(UCSR0A & (1<<RXC0)))
-    f5ae:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
-    f5b2:	87 ff       	sbrs	r24, 7
-    f5b4:	fc cf       	rjmp	.-8      	; 0xf5ae <__vector_20+0x2e>
+    f5de:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
+    f5e2:	87 ff       	sbrs	r24, 7
+    f5e4:	fc cf       	rjmp	.-8      	; 0xf5de <__vector_20+0x2e>
 	;   
 	
 	return UDR0;												
-    f5b6:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
+    f5e6:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
 
 //Interrupt Service Routine is in sleep mode unless USART message is received
 
 ISR(USART0_RX_vect)
 {
 	header = USART_receive_byte();  //header will determine, which kind of message is arriving (following if/else paths)
-    f5ba:	80 93 eb 02 	sts	0x02EB, r24	; 0x8002eb <header>
+    f5ea:	80 93 22 03 	sts	0x0322, r24	; 0x800322 <header>
 	
 	//HANDSHAKE MESSAGE
 	
 	if (header == usart_handshake_message){  // if incoming data is of handshake type...
-    f5be:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5c2:	81 32       	cpi	r24, 0x21	; 33
-    f5c4:	79 f1       	breq	.+94     	; 0xf624 <__vector_20+0xa4>
+    f5ee:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f5f2:	81 32       	cpi	r24, 0x21	; 33
+    f5f4:	79 f1       	breq	.+94     	; 0xf654 <__vector_20+0xa4>
 	//AFTER HEX-RECORD IS RECEIVED, CHECKSUM WILL BE EVALUATED AND CONFIRMATION MESSAGE ("ok" or "er") WILL BE SENT TO LORDYLINK'S BLOCKING THREAD
 	//IF CONFIRMATION IS "ok", LORDYLINK SENDS NEXT RECORD AFTER CONTROLLER HAS WRITTEN DATA SECTION INTO THE SRAM
 	//IF CONFIRMATION IS "er", LORDYLINK SENDS CURRENT RECORD AGAIN, EVALUATION STARTS FROM THE TOP
 	//IF CONFIRMATION MESSAGE ISN'T RECOGNIZED BY LORDYLINK, CHECKSUM STATUS WILL BE RE-EVALUATED AND CONFIRMATION MESSAGE IS TRANSMITTED AGAIN.
 	
 	else if(header == usart_hexfile_message){   //if message is hexfile....
-    f5c6:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5ca:	8a 33       	cpi	r24, 0x3A	; 58
-    f5cc:	d1 f1       	breq	.+116    	; 0xf642 <__vector_20+0xc2>
+    f5f6:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f5fa:	8a 33       	cpi	r24, 0x3A	; 58
+    f5fc:	d1 f1       	breq	.+116    	; 0xf672 <__vector_20+0xc2>
 	
     } // end else if(header == usart_hexfile_message)
 	
 	//THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
 	
 	else if(header == usart_rx_error_hexrecord){									//lordylink didn't "understand" last confirmation	
-    f5ce:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5d2:	8f 33       	cpi	r24, 0x3F	; 63
-    f5d4:	09 f4       	brne	.+2      	; 0xf5d8 <__vector_20+0x58>
-    f5d6:	d3 c0       	rjmp	.+422    	; 0xf77e <__vector_20+0x1fe>
+    f5fe:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f602:	8f 33       	cpi	r24, 0x3F	; 63
+    f604:	09 f4       	brne	.+2      	; 0xf608 <__vector_20+0x58>
+    f606:	d9 c0       	rjmp	.+434    	; 0xf7ba <__vector_20+0x20a>
 			USART_transmit_string("ok");	
 			
 		else																		// if error => record will be sent again, otherwise SRAM entry is correct
 			USART_transmit_string("er");
 	}
 	else if(header == usart_request_data_dump){
-    f5d8:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5dc:	83 37       	cpi	r24, 0x73	; 115
-    f5de:	09 f4       	brne	.+2      	; 0xf5e2 <__vector_20+0x62>
-    f5e0:	3c c1       	rjmp	.+632    	; 0xf85a <__vector_20+0x2da>
+    f608:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f60c:	83 37       	cpi	r24, 0x73	; 115
+    f60e:	09 f4       	brne	.+2      	; 0xf612 <__vector_20+0x62>
+    f610:	4e c1       	rjmp	.+668    	; 0xf8ae <__vector_20+0x2fe>
 			sram_address = 0;
 			send_sram_flag = 1;
 		
 	}
 	
 	else if(header == usart_hexfile_send_complete){							//hexfile transfer is complete
-    f5e2:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5e6:	87 37       	cpi	r24, 0x77	; 119
-    f5e8:	09 f4       	brne	.+2      	; 0xf5ec <__vector_20+0x6c>
-    f5ea:	76 c1       	rjmp	.+748    	; 0xf8d8 <__vector_20+0x358>
-			LCD_Printpos(0,0, "burning flash       ");
-			LCD_Printpos(1,0, "don't turn off       ");
-			write_firmware_to_flash();
+    f612:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f616:	87 37       	cpi	r24, 0x77	; 119
+    f618:	09 f4       	brne	.+2      	; 0xf61c <__vector_20+0x6c>
+    f61a:	aa c1       	rjmp	.+852    	; 0xf970 <__vector_20+0x3c0>
+            flash_flag = 1;
+			
+            //start();
 	}	
 	
 	else if (header == usart_update_message){  // if incoming data is an update handshake 
-    f5ec:	80 91 eb 02 	lds	r24, 0x02EB	; 0x8002eb <header>
-    f5f0:	85 37       	cpi	r24, 0x75	; 117
-    f5f2:	09 f4       	brne	.+2      	; 0xf5f6 <__vector_20+0x76>
-    f5f4:	cd c0       	rjmp	.+410    	; 0xf790 <__vector_20+0x210>
+    f61c:	80 91 22 03 	lds	r24, 0x0322	; 0x800322 <header>
+    f620:	85 37       	cpi	r24, 0x75	; 117
+    f622:	09 f4       	brne	.+2      	; 0xf626 <__vector_20+0x76>
+    f624:	d3 c0       	rjmp	.+422    	; 0xf7cc <__vector_20+0x21c>
 		for(int i = 0; i < 5; ++i)
 		    update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
 		
 	}
     
 }
-    f5f6:	ff 91       	pop	r31
-    f5f8:	ef 91       	pop	r30
-    f5fa:	df 91       	pop	r29
-    f5fc:	cf 91       	pop	r28
-    f5fe:	bf 91       	pop	r27
-    f600:	af 91       	pop	r26
-    f602:	9f 91       	pop	r25
-    f604:	8f 91       	pop	r24
-    f606:	7f 91       	pop	r23
-    f608:	6f 91       	pop	r22
-    f60a:	5f 91       	pop	r21
-    f60c:	4f 91       	pop	r20
-    f60e:	3f 91       	pop	r19
-    f610:	2f 91       	pop	r18
-    f612:	1f 91       	pop	r17
-    f614:	0f 91       	pop	r16
-    f616:	ff 90       	pop	r15
-    f618:	ef 90       	pop	r14
-    f61a:	0f 90       	pop	r0
-    f61c:	0f be       	out	0x3f, r0	; 63
-    f61e:	0f 90       	pop	r0
-    f620:	1f 90       	pop	r1
-    f622:	18 95       	reti
-    f624:	e2 ed       	ldi	r30, 0xD2	; 210
-    f626:	f2 e0       	ldi	r31, 0x02	; 2
-    f628:	22 ee       	ldi	r18, 0xE2	; 226
-    f62a:	32 e0       	ldi	r19, 0x02	; 2
+    f626:	ff 91       	pop	r31
+    f628:	ef 91       	pop	r30
+    f62a:	df 91       	pop	r29
+    f62c:	cf 91       	pop	r28
+    f62e:	bf 91       	pop	r27
+    f630:	af 91       	pop	r26
+    f632:	9f 91       	pop	r25
+    f634:	8f 91       	pop	r24
+    f636:	7f 91       	pop	r23
+    f638:	6f 91       	pop	r22
+    f63a:	5f 91       	pop	r21
+    f63c:	4f 91       	pop	r20
+    f63e:	3f 91       	pop	r19
+    f640:	2f 91       	pop	r18
+    f642:	1f 91       	pop	r17
+    f644:	0f 91       	pop	r16
+    f646:	ff 90       	pop	r15
+    f648:	ef 90       	pop	r14
+    f64a:	0f 90       	pop	r0
+    f64c:	0f be       	out	0x3f, r0	; 63
+    f64e:	0f 90       	pop	r0
+    f650:	1f 90       	pop	r1
+    f652:	18 95       	reti
+    f654:	e9 e0       	ldi	r30, 0x09	; 9
+    f656:	f3 e0       	ldi	r31, 0x03	; 3
+    f658:	29 e1       	ldi	r18, 0x19	; 25
+    f65a:	33 e0       	ldi	r19, 0x03	; 3
 }
 
 
 uint8_t USART_receive_byte(void)
 {
 	while (!(UCSR0A & (1<<RXC0)))
-    f62c:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
-    f630:	87 ff       	sbrs	r24, 7
-    f632:	fc cf       	rjmp	.-8      	; 0xf62c <__vector_20+0xac>
+    f65c:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
+    f660:	87 ff       	sbrs	r24, 7
+    f662:	fc cf       	rjmp	.-8      	; 0xf65c <__vector_20+0xac>
 	;   
 	
 	return UDR0;												
-    f634:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
+    f664:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
 	
 	//HANDSHAKE MESSAGE
 	
 	if (header == usart_handshake_message){  // if incoming data is of handshake type...
 		for(uint8_t i = 0; i < 16; ++i)
 			handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
-    f638:	81 93       	st	Z+, r24
+    f668:	81 93       	st	Z+, r24
 	header = USART_receive_byte();  //header will determine, which kind of message is arriving (following if/else paths)
 	
 	//HANDSHAKE MESSAGE
 	
 	if (header == usart_handshake_message){  // if incoming data is of handshake type...
 		for(uint8_t i = 0; i < 16; ++i)
-    f63a:	2e 17       	cp	r18, r30
-    f63c:	3f 07       	cpc	r19, r31
-    f63e:	b1 f7       	brne	.-20     	; 0xf62c <__vector_20+0xac>
-    f640:	da cf       	rjmp	.-76     	; 0xf5f6 <__vector_20+0x76>
+    f66a:	2e 17       	cp	r18, r30
+    f66c:	3f 07       	cpc	r19, r31
+    f66e:	b1 f7       	brne	.-20     	; 0xf65c <__vector_20+0xac>
+    f670:	da cf       	rjmp	.-76     	; 0xf626 <__vector_20+0x76>
 	//IF CONFIRMATION IS "ok", LORDYLINK SENDS NEXT RECORD AFTER CONTROLLER HAS WRITTEN DATA SECTION INTO THE SRAM
 	//IF CONFIRMATION IS "er", LORDYLINK SENDS CURRENT RECORD AGAIN, EVALUATION STARTS FROM THE TOP
 	//IF CONFIRMATION MESSAGE ISN'T RECOGNIZED BY LORDYLINK, CHECKSUM STATUS WILL BE RE-EVALUATED AND CONFIRMATION MESSAGE IS TRANSMITTED AGAIN.
 	
 	else if(header == usart_hexfile_message){   //if message is hexfile....
 		    ++record_ctr;  //keep track...
-    f642:	80 91 83 02 	lds	r24, 0x0283	; 0x800283 <record_ctr>
-    f646:	90 91 84 02 	lds	r25, 0x0284	; 0x800284 <record_ctr+0x1>
-    f64a:	a0 91 85 02 	lds	r26, 0x0285	; 0x800285 <record_ctr+0x2>
-    f64e:	b0 91 86 02 	lds	r27, 0x0286	; 0x800286 <record_ctr+0x3>
-    f652:	01 96       	adiw	r24, 0x01	; 1
-    f654:	a1 1d       	adc	r26, r1
-    f656:	b1 1d       	adc	r27, r1
-    f658:	80 93 83 02 	sts	0x0283, r24	; 0x800283 <record_ctr>
-    f65c:	90 93 84 02 	sts	0x0284, r25	; 0x800284 <record_ctr+0x1>
-    f660:	a0 93 85 02 	sts	0x0285, r26	; 0x800285 <record_ctr+0x2>
-    f664:	b0 93 86 02 	sts	0x0286, r27	; 0x800286 <record_ctr+0x3>
+    f672:	80 91 b9 02 	lds	r24, 0x02B9	; 0x8002b9 <record_ctr>
+    f676:	90 91 ba 02 	lds	r25, 0x02BA	; 0x8002ba <record_ctr+0x1>
+    f67a:	a0 91 bb 02 	lds	r26, 0x02BB	; 0x8002bb <record_ctr+0x2>
+    f67e:	b0 91 bc 02 	lds	r27, 0x02BC	; 0x8002bc <record_ctr+0x3>
+    f682:	01 96       	adiw	r24, 0x01	; 1
+    f684:	a1 1d       	adc	r26, r1
+    f686:	b1 1d       	adc	r27, r1
+    f688:	80 93 b9 02 	sts	0x02B9, r24	; 0x8002b9 <record_ctr>
+    f68c:	90 93 ba 02 	sts	0x02BA, r25	; 0x8002ba <record_ctr+0x1>
+    f690:	a0 93 bb 02 	sts	0x02BB, r26	; 0x8002bb <record_ctr+0x2>
+    f694:	b0 93 bc 02 	sts	0x02BC, r27	; 0x8002bc <record_ctr+0x3>
 }
 
 
 uint8_t USART_receive_byte(void)
 {
 	while (!(UCSR0A & (1<<RXC0)))
-    f668:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
-    f66c:	87 ff       	sbrs	r24, 7
-    f66e:	fc cf       	rjmp	.-8      	; 0xf668 <__vector_20+0xe8>
+    f698:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
+    f69c:	87 ff       	sbrs	r24, 7
+    f69e:	fc cf       	rjmp	.-8      	; 0xf698 <__vector_20+0xe8>
 	;   
 	
 	return UDR0;												
-    f670:	10 91 c6 00 	lds	r17, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
+    f6a0:	10 91 c6 00 	lds	r17, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
 	else if(header == usart_hexfile_message){   //if message is hexfile....
 		    ++record_ctr;  //keep track...
 			//PARSE INCOMING MESSAGE
 		
 			uint8_t data_section_size = USART_receive_byte();	//this is the amount of databytes that will be written into the SRAM
 			uint8_t hex_record_size = data_section_size + 5;	// add start bytes and checksum to data section length for total size of message
-    f674:	85 e0       	ldi	r24, 0x05	; 5
-    f676:	81 0f       	add	r24, r17
+    f6a4:	85 e0       	ldi	r24, 0x05	; 5
+    f6a6:	81 0f       	add	r24, r17
 		
 			hex_buffer_array[0] = data_section_size;			//buffer starts with data_section_size, header ':' will be discarded
-    f678:	10 93 8c 02 	sts	0x028C, r17	; 0x80028c <hex_buffer_array>
+    f6a8:	10 93 c3 02 	sts	0x02C3, r17	; 0x8002c3 <hex_buffer_array>
 		
 			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
-    f67c:	c8 2f       	mov	r28, r24
-    f67e:	d0 e0       	ldi	r29, 0x00	; 0
-    f680:	82 30       	cpi	r24, 0x02	; 2
-    f682:	88 f0       	brcs	.+34     	; 0xf6a6 <__vector_20+0x126>
-    f684:	21 e0       	ldi	r18, 0x01	; 1
-    f686:	30 e0       	ldi	r19, 0x00	; 0
+    f6ac:	c8 2f       	mov	r28, r24
+    f6ae:	d0 e0       	ldi	r29, 0x00	; 0
+    f6b0:	82 30       	cpi	r24, 0x02	; 2
+    f6b2:	88 f0       	brcs	.+34     	; 0xf6d6 <__vector_20+0x126>
+    f6b4:	21 e0       	ldi	r18, 0x01	; 1
+    f6b6:	30 e0       	ldi	r19, 0x00	; 0
 }
 
 
 uint8_t USART_receive_byte(void)
 {
 	while (!(UCSR0A & (1<<RXC0)))
-    f688:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
-    f68c:	87 ff       	sbrs	r24, 7
-    f68e:	fc cf       	rjmp	.-8      	; 0xf688 <__vector_20+0x108>
+    f6b8:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
+    f6bc:	87 ff       	sbrs	r24, 7
+    f6be:	fc cf       	rjmp	.-8      	; 0xf6b8 <__vector_20+0x108>
 	;   
 	
 	return UDR0;												
-    f690:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
+    f6c0:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
 			uint8_t hex_record_size = data_section_size + 5;	// add start bytes and checksum to data section length for total size of message
 		
 			hex_buffer_array[0] = data_section_size;			//buffer starts with data_section_size, header ':' will be discarded
 		
 			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
 				hex_buffer_array[ i ] = USART_receive_byte();
-    f694:	f9 01       	movw	r30, r18
-    f696:	e4 57       	subi	r30, 0x74	; 116
-    f698:	fd 4f       	sbci	r31, 0xFD	; 253
-    f69a:	80 83       	st	Z, r24
+    f6c4:	f9 01       	movw	r30, r18
+    f6c6:	ed 53       	subi	r30, 0x3D	; 61
+    f6c8:	fd 4f       	sbci	r31, 0xFD	; 253
+    f6ca:	80 83       	st	Z, r24
 			uint8_t data_section_size = USART_receive_byte();	//this is the amount of databytes that will be written into the SRAM
 			uint8_t hex_record_size = data_section_size + 5;	// add start bytes and checksum to data section length for total size of message
 		
 			hex_buffer_array[0] = data_section_size;			//buffer starts with data_section_size, header ':' will be discarded
 		
 			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
-    f69c:	2f 5f       	subi	r18, 0xFF	; 255
-    f69e:	3f 4f       	sbci	r19, 0xFF	; 255
-    f6a0:	c2 17       	cp	r28, r18
-    f6a2:	d3 07       	cpc	r29, r19
-    f6a4:	89 f7       	brne	.-30     	; 0xf688 <__vector_20+0x108>
+    f6cc:	2f 5f       	subi	r18, 0xFF	; 255
+    f6ce:	3f 4f       	sbci	r19, 0xFF	; 255
+    f6d0:	c2 17       	cp	r28, r18
+    f6d2:	d3 07       	cpc	r29, r19
+    f6d4:	89 f7       	brne	.-30     	; 0xf6b8 <__vector_20+0x108>
 				hex_buffer_array[ i ] = USART_receive_byte();
 			
 			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
 		     switch(animation_ctr){	// display animation, tells user all is going well
-    f6a6:	80 91 87 02 	lds	r24, 0x0287	; 0x800287 <animation_ctr>
-    f6aa:	90 91 88 02 	lds	r25, 0x0288	; 0x800288 <animation_ctr+0x1>
-    f6ae:	a0 91 89 02 	lds	r26, 0x0289	; 0x800289 <animation_ctr+0x2>
-    f6b2:	b0 91 8a 02 	lds	r27, 0x028A	; 0x80028a <animation_ctr+0x3>
-    f6b6:	88 37       	cpi	r24, 0x78	; 120
-    f6b8:	91 05       	cpc	r25, r1
-    f6ba:	a1 05       	cpc	r26, r1
-    f6bc:	b1 05       	cpc	r27, r1
-    f6be:	09 f4       	brne	.+2      	; 0xf6c2 <__vector_20+0x142>
-    f6c0:	75 c0       	rjmp	.+234    	; 0xf7ac <__vector_20+0x22c>
-    f6c2:	08 f4       	brcc	.+2      	; 0xf6c6 <__vector_20+0x146>
-    f6c4:	d6 c0       	rjmp	.+428    	; 0xf872 <__vector_20+0x2f2>
-    f6c6:	80 3f       	cpi	r24, 0xF0	; 240
-    f6c8:	91 05       	cpc	r25, r1
-    f6ca:	a1 05       	cpc	r26, r1
-    f6cc:	b1 05       	cpc	r27, r1
-    f6ce:	09 f4       	brne	.+2      	; 0xf6d2 <__vector_20+0x152>
-    f6d0:	f0 c0       	rjmp	.+480    	; 0xf8b2 <__vector_20+0x332>
-    f6d2:	88 36       	cpi	r24, 0x68	; 104
-    f6d4:	21 e0       	ldi	r18, 0x01	; 1
-    f6d6:	92 07       	cpc	r25, r18
-    f6d8:	a1 05       	cpc	r26, r1
-    f6da:	b1 05       	cpc	r27, r1
-    f6dc:	09 f0       	breq	.+2      	; 0xf6e0 <__vector_20+0x160>
-    f6de:	75 c0       	rjmp	.+234    	; 0xf7ca <__vector_20+0x24a>
-    f6e0:	81 e0       	ldi	r24, 0x01	; 1
-    f6e2:	90 e0       	ldi	r25, 0x00	; 0
-    f6e4:	a0 e0       	ldi	r26, 0x00	; 0
-    f6e6:	b0 e0       	ldi	r27, 0x00	; 0
-    		     case 360:
+    f6d6:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f6da:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f6de:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f6e2:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f6e6:	88 3c       	cpi	r24, 0xC8	; 200
+    f6e8:	91 05       	cpc	r25, r1
+    f6ea:	a1 05       	cpc	r26, r1
+    f6ec:	b1 05       	cpc	r27, r1
+    f6ee:	09 f4       	brne	.+2      	; 0xf6f2 <__vector_20+0x142>
+    f6f0:	ea c0       	rjmp	.+468    	; 0xf8c6 <__vector_20+0x316>
+    f6f2:	08 f4       	brcc	.+2      	; 0xf6f6 <__vector_20+0x146>
+    f6f4:	bd c0       	rjmp	.+378    	; 0xf870 <__vector_20+0x2c0>
+    f6f6:	80 39       	cpi	r24, 0x90	; 144
+    f6f8:	21 e0       	ldi	r18, 0x01	; 1
+    f6fa:	92 07       	cpc	r25, r18
+    f6fc:	a1 05       	cpc	r26, r1
+    f6fe:	b1 05       	cpc	r27, r1
+    f700:	09 f4       	brne	.+2      	; 0xf704 <__vector_20+0x154>
+    f702:	23 c1       	rjmp	.+582    	; 0xf94a <__vector_20+0x39a>
+    f704:	84 3f       	cpi	r24, 0xF4	; 244
+    f706:	21 e0       	ldi	r18, 0x01	; 1
+    f708:	92 07       	cpc	r25, r18
+    f70a:	a1 05       	cpc	r26, r1
+    f70c:	b1 05       	cpc	r27, r1
+    f70e:	09 f4       	brne	.+2      	; 0xf712 <__vector_20+0x162>
+    f710:	fd c0       	rjmp	.+506    	; 0xf90c <__vector_20+0x35c>
+    f712:	8c 32       	cpi	r24, 0x2C	; 44
+    f714:	21 e0       	ldi	r18, 0x01	; 1
+    f716:	92 07       	cpc	r25, r18
+    f718:	a1 05       	cpc	r26, r1
+    f71a:	b1 05       	cpc	r27, r1
+    f71c:	09 f4       	brne	.+2      	; 0xf720 <__vector_20+0x170>
+    f71e:	e6 c0       	rjmp	.+460    	; 0xf8ec <__vector_20+0x33c>
+    f720:	01 96       	adiw	r24, 0x01	; 1
+    f722:	a1 1d       	adc	r26, r1
+    f724:	b1 1d       	adc	r27, r1
+    		     case 500:
     		     animation_ctr = 0;
     		     break;
 		     }//end switch
 		 
 		     animation_ctr++;
-    f6e8:	80 93 87 02 	sts	0x0287, r24	; 0x800287 <animation_ctr>
-    f6ec:	90 93 88 02 	sts	0x0288, r25	; 0x800288 <animation_ctr+0x1>
-    f6f0:	a0 93 89 02 	sts	0x0289, r26	; 0x800289 <animation_ctr+0x2>
-    f6f4:	b0 93 8a 02 	sts	0x028A, r27	; 0x80028a <animation_ctr+0x3>
+    f726:	80 93 bd 02 	sts	0x02BD, r24	; 0x8002bd <animation_ctr>
+    f72a:	90 93 be 02 	sts	0x02BE, r25	; 0x8002be <animation_ctr+0x1>
+    f72e:	a0 93 bf 02 	sts	0x02BF, r26	; 0x8002bf <animation_ctr+0x2>
+    f732:	b0 93 c0 02 	sts	0x02C0, r27	; 0x8002c0 <animation_ctr+0x3>
 			//THIS PART CALCULATES CHECKSUM FROM MESSAGE
 			//AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
 			
 			uint16_t vec_sum = 0;												//local helper variable for checksum calculation
 			uint8_t checksum_from_file = hex_buffer_array[hex_record_size-1];   //read checksum from file
-    f6f8:	9e 01       	movw	r18, r28
-    f6fa:	21 50       	subi	r18, 0x01	; 1
-    f6fc:	31 09       	sbc	r19, r1
-    f6fe:	f9 01       	movw	r30, r18
-    f700:	e4 57       	subi	r30, 0x74	; 116
-    f702:	fd 4f       	sbci	r31, 0xFD	; 253
-    f704:	70 81       	ld	r23, Z
+    f736:	9e 01       	movw	r18, r28
+    f738:	21 50       	subi	r18, 0x01	; 1
+    f73a:	31 09       	sbc	r19, r1
+    f73c:	f9 01       	movw	r30, r18
+    f73e:	ed 53       	subi	r30, 0x3D	; 61
+    f740:	fd 4f       	sbci	r31, 0xFD	; 253
+    f742:	70 81       	ld	r23, Z
 		
 			for(int i = 0; i < hex_record_size - 1; ++i){						// accumulate record for checksum calculation
-    f706:	12 16       	cp	r1, r18
-    f708:	13 06       	cpc	r1, r19
-    f70a:	0c f0       	brlt	.+2      	; 0xf70e <__vector_20+0x18e>
-    f70c:	1a c1       	rjmp	.+564    	; 0xf942 <__vector_20+0x3c2>
-    f70e:	80 e0       	ldi	r24, 0x00	; 0
-    f710:	90 e0       	ldi	r25, 0x00	; 0
-    f712:	40 e0       	ldi	r20, 0x00	; 0
-    f714:	50 e0       	ldi	r21, 0x00	; 0
+    f744:	12 16       	cp	r1, r18
+    f746:	13 06       	cpc	r1, r19
+    f748:	0c f0       	brlt	.+2      	; 0xf74c <__vector_20+0x19c>
+    f74a:	48 c1       	rjmp	.+656    	; 0xf9dc <__vector_20+0x42c>
+    f74c:	80 e0       	ldi	r24, 0x00	; 0
+    f74e:	90 e0       	ldi	r25, 0x00	; 0
+    f750:	40 e0       	ldi	r20, 0x00	; 0
+    f752:	50 e0       	ldi	r21, 0x00	; 0
 				vec_sum += hex_buffer_array[ i ];
-    f716:	fc 01       	movw	r30, r24
-    f718:	e4 57       	subi	r30, 0x74	; 116
-    f71a:	fd 4f       	sbci	r31, 0xFD	; 253
-    f71c:	60 81       	ld	r22, Z
-    f71e:	46 0f       	add	r20, r22
-    f720:	51 1d       	adc	r21, r1
+    f754:	fc 01       	movw	r30, r24
+    f756:	ed 53       	subi	r30, 0x3D	; 61
+    f758:	fd 4f       	sbci	r31, 0xFD	; 253
+    f75a:	60 81       	ld	r22, Z
+    f75c:	46 0f       	add	r20, r22
+    f75e:	51 1d       	adc	r21, r1
 			//AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
 			
 			uint16_t vec_sum = 0;												//local helper variable for checksum calculation
 			uint8_t checksum_from_file = hex_buffer_array[hex_record_size-1];   //read checksum from file
 		
 			for(int i = 0; i < hex_record_size - 1; ++i){						// accumulate record for checksum calculation
-    f722:	01 96       	adiw	r24, 0x01	; 1
-    f724:	82 17       	cp	r24, r18
-    f726:	93 07       	cpc	r25, r19
-    f728:	b1 f7       	brne	.-20     	; 0xf716 <__vector_20+0x196>
-    f72a:	41 95       	neg	r20
+    f760:	01 96       	adiw	r24, 0x01	; 1
+    f762:	28 17       	cp	r18, r24
+    f764:	39 07       	cpc	r19, r25
+    f766:	b1 f7       	brne	.-20     	; 0xf754 <__vector_20+0x1a4>
+    f768:	41 95       	neg	r20
 				vec_sum += hex_buffer_array[ i ];
                 
             }		    
 			uint8_t checksum_calculated =  ~(vec_sum & 0x00ff ) + 0x01;		// actual checksum calculation
 		
 			if(checksum_calculated == checksum_from_file ){						// compare checksums
-    f72c:	74 17       	cp	r23, r20
-    f72e:	09 f4       	brne	.+2      	; 0xf732 <__vector_20+0x1b2>
-    f730:	50 c0       	rjmp	.+160    	; 0xf7d2 <__vector_20+0x252>
+    f76a:	74 17       	cp	r23, r20
+    f76c:	e9 f1       	breq	.+122    	; 0xf7e8 <__vector_20+0x238>
 															// "er" => current record will be sent again. if neither "ok" nor "er" is detected by lordylink, rx_error_header will be sent
 															//to reevaluate checksum via flag variable "checksum_status"
 			}//end if(checksum calculated....	
 			
 			else if( checksum_calculated != checksum_from_file){
 				checksum_status = is_error;											// error, same record will be sent again
-    f732:	10 92 8b 02 	sts	0x028B, r1	; 0x80028b <checksum_status>
+    f76e:	10 92 c1 02 	sts	0x02C1, r1	; 0x8002c1 <checksum_status>
 
 
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
-    f736:	80 e8       	ldi	r24, 0x80	; 128
-    f738:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f772:	80 e8       	ldi	r24, 0x80	; 128
+    f774:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f73c:	86 ef       	ldi	r24, 0xF6	; 246
-    f73e:	91 e0       	ldi	r25, 0x01	; 1
-    f740:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f778:	86 e2       	ldi	r24, 0x26	; 38
+    f77a:	92 e0       	ldi	r25, 0x02	; 2
+    f77c:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f744:	80 ec       	ldi	r24, 0xC0	; 192
-    f746:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f780:	80 ec       	ldi	r24, 0xC0	; 192
+    f782:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f74a:	8c e0       	ldi	r24, 0x0C	; 12
-    f74c:	92 e0       	ldi	r25, 0x02	; 2
-    f74e:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f752:	9f e7       	ldi	r25, 0x7F	; 127
-    f754:	2a e1       	ldi	r18, 0x1A	; 26
-    f756:	86 e0       	ldi	r24, 0x06	; 6
-    f758:	91 50       	subi	r25, 0x01	; 1
-    f75a:	20 40       	sbci	r18, 0x00	; 0
-    f75c:	80 40       	sbci	r24, 0x00	; 0
-    f75e:	e1 f7       	brne	.-8      	; 0xf758 <__vector_20+0x1d8>
-    f760:	00 c0       	rjmp	.+0      	; 0xf762 <__vector_20+0x1e2>
-    f762:	00 00       	nop
+    f786:	8c e3       	ldi	r24, 0x3C	; 60
+    f788:	92 e0       	ldi	r25, 0x02	; 2
+    f78a:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f78e:	9f e7       	ldi	r25, 0x7F	; 127
+    f790:	2a e1       	ldi	r18, 0x1A	; 26
+    f792:	86 e0       	ldi	r24, 0x06	; 6
+    f794:	91 50       	subi	r25, 0x01	; 1
+    f796:	20 40       	sbci	r18, 0x00	; 0
+    f798:	80 40       	sbci	r24, 0x00	; 0
+    f79a:	e1 f7       	brne	.-8      	; 0xf794 <__vector_20+0x1e4>
+    f79c:	00 c0       	rjmp	.+0      	; 0xf79e <__vector_20+0x1ee>
+    f79e:	00 00       	nop
 				LCD_Printpos(0,0,"checksum error!      ");						//LCD user feedback
 				LCD_Printpos(1,0,"trying again......  ");
 				
 				_delay_ms(100);
 				
 				animation_ctr  = 0;
-    f764:	10 92 87 02 	sts	0x0287, r1	; 0x800287 <animation_ctr>
-    f768:	10 92 88 02 	sts	0x0288, r1	; 0x800288 <animation_ctr+0x1>
-    f76c:	10 92 89 02 	sts	0x0289, r1	; 0x800289 <animation_ctr+0x2>
-    f770:	10 92 8a 02 	sts	0x028A, r1	; 0x80028a <animation_ctr+0x3>
+    f7a0:	10 92 bd 02 	sts	0x02BD, r1	; 0x8002bd <animation_ctr>
+    f7a4:	10 92 be 02 	sts	0x02BE, r1	; 0x8002be <animation_ctr+0x1>
+    f7a8:	10 92 bf 02 	sts	0x02BF, r1	; 0x8002bf <animation_ctr+0x2>
+    f7ac:	10 92 c0 02 	sts	0x02C0, r1	; 0x8002c0 <animation_ctr+0x3>
 				USART_transmit_string("er");										
-    f774:	81 e2       	ldi	r24, 0x21	; 33
-    f776:	92 e0       	ldi	r25, 0x02	; 2
-    f778:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
-    f77c:	3c cf       	rjmp	.-392    	; 0xf5f6 <__vector_20+0x76>
+    f7b0:	81 e5       	ldi	r24, 0x51	; 81
+    f7b2:	92 e0       	ldi	r25, 0x02	; 2
+    f7b4:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
+    f7b8:	36 cf       	rjmp	.-404    	; 0xf626 <__vector_20+0x76>
 	
 	//THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
 	
 	else if(header == usart_rx_error_hexrecord){									//lordylink didn't "understand" last confirmation	
 		
 		if(checksum_status == is_ok)											    // evaluating last checksum again...
-    f77e:	80 91 8b 02 	lds	r24, 0x028B	; 0x80028b <checksum_status>
-    f782:	81 11       	cpse	r24, r1
-    f784:	65 c0       	rjmp	.+202    	; 0xf850 <__vector_20+0x2d0>
+    f7ba:	80 91 c1 02 	lds	r24, 0x02C1	; 0x8002c1 <checksum_status>
+    f7be:	81 11       	cpse	r24, r1
+    f7c0:	52 c0       	rjmp	.+164    	; 0xf866 <__vector_20+0x2b6>
 			USART_transmit_string("ok");	
 			
 		else																		// if error => record will be sent again, otherwise SRAM entry is correct
 			USART_transmit_string("er");
-    f786:	81 e2       	ldi	r24, 0x21	; 33
-    f788:	92 e0       	ldi	r25, 0x02	; 2
-    f78a:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
-    f78e:	33 cf       	rjmp	.-410    	; 0xf5f6 <__vector_20+0x76>
-    f790:	ec ec       	ldi	r30, 0xCC	; 204
-    f792:	f2 e0       	ldi	r31, 0x02	; 2
+    f7c2:	81 e5       	ldi	r24, 0x51	; 81
+    f7c4:	92 e0       	ldi	r25, 0x02	; 2
+    f7c6:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
+    f7ca:	2d cf       	rjmp	.-422    	; 0xf626 <__vector_20+0x76>
+    f7cc:	e3 e0       	ldi	r30, 0x03	; 3
+    f7ce:	f3 e0       	ldi	r31, 0x03	; 3
 }
 
 
 uint8_t USART_receive_byte(void)
 {
 	while (!(UCSR0A & (1<<RXC0)))
-    f794:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
-    f798:	87 ff       	sbrs	r24, 7
-    f79a:	fc cf       	rjmp	.-8      	; 0xf794 <__vector_20+0x214>
+    f7d0:	80 91 c0 00 	lds	r24, 0x00C0	; 0x8000c0 <__TEXT_REGION_LENGTH__+0x7f00c0>
+    f7d4:	87 ff       	sbrs	r24, 7
+    f7d6:	fc cf       	rjmp	.-8      	; 0xf7d0 <__vector_20+0x220>
 	;   
 	
 	return UDR0;												
-    f79c:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
-			write_firmware_to_flash();
+    f7d8:	80 91 c6 00 	lds	r24, 0x00C6	; 0x8000c6 <__TEXT_REGION_LENGTH__+0x7f00c6>
+            //start();
 	}	
 	
 	else if (header == usart_update_message){  // if incoming data is an update handshake 
 		for(int i = 0; i < 5; ++i)
 		    update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
-    f7a0:	81 93       	st	Z+, r24
-			LCD_Printpos(1,0, "don't turn off       ");
-			write_firmware_to_flash();
+    f7dc:	81 93       	st	Z+, r24
+			
+            //start();
 	}	
 	
 	else if (header == usart_update_message){  // if incoming data is an update handshake 
 		for(int i = 0; i < 5; ++i)
-    f7a2:	82 e0       	ldi	r24, 0x02	; 2
-    f7a4:	e1 3d       	cpi	r30, 0xD1	; 209
-    f7a6:	f8 07       	cpc	r31, r24
-    f7a8:	a9 f7       	brne	.-22     	; 0xf794 <__vector_20+0x214>
-    f7aa:	25 cf       	rjmp	.-438    	; 0xf5f6 <__vector_20+0x76>
-void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
-{
-	if (row == 0 && pos<16)
-		LCD_Action((pos & 0x0F)|0x80);
-	else if (row == 1 && pos<16)
-		LCD_Action((pos & 0x0F)|0xC0);
-    f7ac:	80 ec       	ldi	r24, 0xC0	; 192
-    f7ae:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
-	
-	LCD_Print(str);
-    f7b2:	80 ed       	ldi	r24, 0xD0	; 208
-    f7b4:	91 e0       	ldi	r25, 0x01	; 1
-    f7b6:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f7ba:	80 91 87 02 	lds	r24, 0x0287	; 0x800287 <animation_ctr>
-    f7be:	90 91 88 02 	lds	r25, 0x0288	; 0x800288 <animation_ctr+0x1>
-    f7c2:	a0 91 89 02 	lds	r26, 0x0289	; 0x800289 <animation_ctr+0x2>
-    f7c6:	b0 91 8a 02 	lds	r27, 0x028A	; 0x80028a <animation_ctr+0x3>
-    f7ca:	01 96       	adiw	r24, 0x01	; 1
-    f7cc:	a1 1d       	adc	r26, r1
-    f7ce:	b1 1d       	adc	r27, r1
-    f7d0:	8b cf       	rjmp	.-234    	; 0xf6e8 <__vector_20+0x168>
+    f7de:	83 e0       	ldi	r24, 0x03	; 3
+    f7e0:	e8 30       	cpi	r30, 0x08	; 8
+    f7e2:	f8 07       	cpc	r31, r24
+    f7e4:	a9 f7       	brne	.-22     	; 0xf7d0 <__vector_20+0x220>
+    f7e6:	1f cf       	rjmp	.-450    	; 0xf626 <__vector_20+0x76>
                 
             }		    
 			uint8_t checksum_calculated =  ~(vec_sum & 0x00ff ) + 0x01;		// actual checksum calculation
 		
 			if(checksum_calculated == checksum_from_file ){						// compare checksums
 				checksum_status = is_ok;										// set boolean flag for error handling
-    f7d2:	81 e0       	ldi	r24, 0x01	; 1
-    f7d4:	80 93 8b 02 	sts	0x028B, r24	; 0x80028b <checksum_status>
+    f7e8:	81 e0       	ldi	r24, 0x01	; 1
+    f7ea:	80 93 c1 02 	sts	0x02C1, r24	; 0x8002c1 <checksum_status>
 				
 				for(int i = 0; i < data_section_size; ++i){						//if checksum is ok, write data-section to SRAM
-    f7d8:	11 23       	and	r17, r17
-    f7da:	d1 f1       	breq	.+116    	; 0xf850 <__vector_20+0x2d0>
-    f7dc:	e1 2e       	mov	r14, r17
-    f7de:	f1 2c       	mov	r15, r1
-    f7e0:	84 e0       	ldi	r24, 0x04	; 4
-    f7e2:	e8 0e       	add	r14, r24
-    f7e4:	f1 1c       	adc	r15, r1
-    f7e6:	04 e0       	ldi	r16, 0x04	; 4
-    f7e8:	10 e0       	ldi	r17, 0x00	; 0
-    f7ea:	e8 01       	movw	r28, r16
-    f7ec:	c4 57       	subi	r28, 0x74	; 116
-    f7ee:	dd 4f       	sbci	r29, 0xFD	; 253
+    f7ee:	11 23       	and	r17, r17
+    f7f0:	d1 f1       	breq	.+116    	; 0xf866 <__vector_20+0x2b6>
+    f7f2:	e1 2e       	mov	r14, r17
+    f7f4:	f1 2c       	mov	r15, r1
+    f7f6:	84 e0       	ldi	r24, 0x04	; 4
+    f7f8:	e8 0e       	add	r14, r24
+    f7fa:	f1 1c       	adc	r15, r1
+    f7fc:	04 e0       	ldi	r16, 0x04	; 4
+    f7fe:	10 e0       	ldi	r17, 0x00	; 0
+    f800:	e8 01       	movw	r28, r16
+    f802:	cd 53       	subi	r28, 0x3D	; 61
+    f804:	dd 4f       	sbci	r29, 0xFD	; 253
 					
 					do{
 						SPI_SRAM_ByteWrite(address, hex_buffer_array[ i + 4 ]);	
-    f7f0:	48 81       	ld	r20, Y
-    f7f2:	60 91 e3 02 	lds	r22, 0x02E3	; 0x8002e3 <address>
-    f7f6:	70 91 e4 02 	lds	r23, 0x02E4	; 0x8002e4 <address+0x1>
-    f7fa:	80 91 e5 02 	lds	r24, 0x02E5	; 0x8002e5 <address+0x2>
-    f7fe:	90 91 e6 02 	lds	r25, 0x02E6	; 0x8002e6 <address+0x3>
-    f802:	0e 94 df 78 	call	0xf1be	; 0xf1be <SPI_SRAM_ByteWrite>
+    f806:	48 81       	ld	r20, Y
+    f808:	60 91 1a 03 	lds	r22, 0x031A	; 0x80031a <address>
+    f80c:	70 91 1b 03 	lds	r23, 0x031B	; 0x80031b <address+0x1>
+    f810:	80 91 1c 03 	lds	r24, 0x031C	; 0x80031c <address+0x2>
+    f814:	90 91 1d 03 	lds	r25, 0x031D	; 0x80031d <address+0x3>
+    f818:	0e 94 df 78 	call	0xf1be	; 0xf1be <SPI_SRAM_ByteWrite>
 					
 					}while(SPI_SRAM_ByteRead(address) !=  hex_buffer_array[ i + 4 ]);  //additional safety-guard: write to address and read content back. if this doesn't work, sram is probably broken
-    f806:	60 91 e3 02 	lds	r22, 0x02E3	; 0x8002e3 <address>
-    f80a:	70 91 e4 02 	lds	r23, 0x02E4	; 0x8002e4 <address+0x1>
-    f80e:	80 91 e5 02 	lds	r24, 0x02E5	; 0x8002e5 <address+0x2>
-    f812:	90 91 e6 02 	lds	r25, 0x02E6	; 0x8002e6 <address+0x3>
-    f816:	0e 94 0a 79 	call	0xf214	; 0xf214 <SPI_SRAM_ByteRead>
-    f81a:	98 81       	ld	r25, Y
-    f81c:	89 13       	cpse	r24, r25
-    f81e:	e8 cf       	rjmp	.-48     	; 0xf7f0 <__vector_20+0x270>
+    f81c:	60 91 1a 03 	lds	r22, 0x031A	; 0x80031a <address>
+    f820:	70 91 1b 03 	lds	r23, 0x031B	; 0x80031b <address+0x1>
+    f824:	80 91 1c 03 	lds	r24, 0x031C	; 0x80031c <address+0x2>
+    f828:	90 91 1d 03 	lds	r25, 0x031D	; 0x80031d <address+0x3>
+    f82c:	0e 94 0a 79 	call	0xf214	; 0xf214 <SPI_SRAM_ByteRead>
+    f830:	98 81       	ld	r25, Y
+    f832:	89 13       	cpse	r24, r25
+    f834:	e8 cf       	rjmp	.-48     	; 0xf806 <__vector_20+0x256>
 				
 					++address;	
-    f820:	80 91 e3 02 	lds	r24, 0x02E3	; 0x8002e3 <address>
-    f824:	90 91 e4 02 	lds	r25, 0x02E4	; 0x8002e4 <address+0x1>
-    f828:	a0 91 e5 02 	lds	r26, 0x02E5	; 0x8002e5 <address+0x2>
-    f82c:	b0 91 e6 02 	lds	r27, 0x02E6	; 0x8002e6 <address+0x3>
-    f830:	01 96       	adiw	r24, 0x01	; 1
-    f832:	a1 1d       	adc	r26, r1
-    f834:	b1 1d       	adc	r27, r1
-    f836:	80 93 e3 02 	sts	0x02E3, r24	; 0x8002e3 <address>
-    f83a:	90 93 e4 02 	sts	0x02E4, r25	; 0x8002e4 <address+0x1>
-    f83e:	a0 93 e5 02 	sts	0x02E5, r26	; 0x8002e5 <address+0x2>
-    f842:	b0 93 e6 02 	sts	0x02E6, r27	; 0x8002e6 <address+0x3>
-    f846:	0f 5f       	subi	r16, 0xFF	; 255
-    f848:	1f 4f       	sbci	r17, 0xFF	; 255
+    f836:	80 91 1a 03 	lds	r24, 0x031A	; 0x80031a <address>
+    f83a:	90 91 1b 03 	lds	r25, 0x031B	; 0x80031b <address+0x1>
+    f83e:	a0 91 1c 03 	lds	r26, 0x031C	; 0x80031c <address+0x2>
+    f842:	b0 91 1d 03 	lds	r27, 0x031D	; 0x80031d <address+0x3>
+    f846:	01 96       	adiw	r24, 0x01	; 1
+    f848:	a1 1d       	adc	r26, r1
+    f84a:	b1 1d       	adc	r27, r1
+    f84c:	80 93 1a 03 	sts	0x031A, r24	; 0x80031a <address>
+    f850:	90 93 1b 03 	sts	0x031B, r25	; 0x80031b <address+0x1>
+    f854:	a0 93 1c 03 	sts	0x031C, r26	; 0x80031c <address+0x2>
+    f858:	b0 93 1d 03 	sts	0x031D, r27	; 0x80031d <address+0x3>
+    f85c:	0f 5f       	subi	r16, 0xFF	; 255
+    f85e:	1f 4f       	sbci	r17, 0xFF	; 255
 			uint8_t checksum_calculated =  ~(vec_sum & 0x00ff ) + 0x01;		// actual checksum calculation
 		
 			if(checksum_calculated == checksum_from_file ){						// compare checksums
 				checksum_status = is_ok;										// set boolean flag for error handling
 				
 				for(int i = 0; i < data_section_size; ++i){						//if checksum is ok, write data-section to SRAM
-    f84a:	e0 16       	cp	r14, r16
-    f84c:	f1 06       	cpc	r15, r17
-    f84e:	69 f6       	brne	.-102    	; 0xf7ea <__vector_20+0x26a>
+    f860:	e0 16       	cp	r14, r16
+    f862:	f1 06       	cpc	r15, r17
+    f864:	69 f6       	brne	.-102    	; 0xf800 <__vector_20+0x250>
 					}while(SPI_SRAM_ByteRead(address) !=  hex_buffer_array[ i + 4 ]);  //additional safety-guard: write to address and read content back. if this doesn't work, sram is probably broken
 				
 					++address;	
 						
 				}//end for
 				USART_transmit_string("ok");				// confirm transmission: lordylink thread blocks until confirmation is either "ok" or "er". checksum "ok" => SRAM will be written, next record will be sent
-    f850:	83 ef       	ldi	r24, 0xF3	; 243
-    f852:	91 e0       	ldi	r25, 0x01	; 1
-    f854:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
-    f858:	ce ce       	rjmp	.-612    	; 0xf5f6 <__vector_20+0x76>
-		else																		// if error => record will be sent again, otherwise SRAM entry is correct
-			USART_transmit_string("er");
-	}
-	else if(header == usart_request_data_dump){
-		
-			sram_address = 0;
-    f85a:	10 92 e7 02 	sts	0x02E7, r1	; 0x8002e7 <sram_address>
-    f85e:	10 92 e8 02 	sts	0x02E8, r1	; 0x8002e8 <sram_address+0x1>
-    f862:	10 92 e9 02 	sts	0x02E9, r1	; 0x8002e9 <sram_address+0x2>
-    f866:	10 92 ea 02 	sts	0x02EA, r1	; 0x8002ea <sram_address+0x3>
-			send_sram_flag = 1;
-    f86a:	81 e0       	ldi	r24, 0x01	; 1
-    f86c:	80 93 82 02 	sts	0x0282, r24	; 0x800282 <send_sram_flag>
-    f870:	c2 ce       	rjmp	.-636    	; 0xf5f6 <__vector_20+0x76>
+    f866:	83 e2       	ldi	r24, 0x23	; 35
+    f868:	92 e0       	ldi	r25, 0x02	; 2
+    f86a:	0e 94 55 79 	call	0xf2aa	; 0xf2aa <USART_transmit_string>
+    f86e:	db ce       	rjmp	.-586    	; 0xf626 <__vector_20+0x76>
 		
 			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
 				hex_buffer_array[ i ] = USART_receive_byte();
 			
 			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
 		     switch(animation_ctr){	// display animation, tells user all is going well
-    f872:	81 30       	cpi	r24, 0x01	; 1
-    f874:	91 05       	cpc	r25, r1
-    f876:	a1 05       	cpc	r26, r1
-    f878:	b1 05       	cpc	r27, r1
-    f87a:	09 f0       	breq	.+2      	; 0xf87e <__vector_20+0x2fe>
-    f87c:	a6 cf       	rjmp	.-180    	; 0xf7ca <__vector_20+0x24a>
-
-
-void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
-{
-	if (row == 0 && pos<16)
-		LCD_Action((pos & 0x0F)|0x80);
-    f87e:	80 e8       	ldi	r24, 0x80	; 128
-    f880:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
-	else if (row == 1 && pos<16)
-		LCD_Action((pos & 0x0F)|0xC0);
-	
-	LCD_Print(str);
-    f884:	8c ea       	ldi	r24, 0xAC	; 172
-    f886:	91 e0       	ldi	r25, 0x01	; 1
-    f888:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f870:	81 30       	cpi	r24, 0x01	; 1
+    f872:	91 05       	cpc	r25, r1
+    f874:	a1 05       	cpc	r26, r1
+    f876:	b1 05       	cpc	r27, r1
+    f878:	09 f4       	brne	.+2      	; 0xf87c <__vector_20+0x2cc>
+    f87a:	4d c0       	rjmp	.+154    	; 0xf916 <__vector_20+0x366>
+    f87c:	84 36       	cpi	r24, 0x64	; 100
+    f87e:	91 05       	cpc	r25, r1
+    f880:	a1 05       	cpc	r26, r1
+    f882:	b1 05       	cpc	r27, r1
+    f884:	09 f0       	breq	.+2      	; 0xf888 <__vector_20+0x2d8>
+    f886:	4c cf       	rjmp	.-360    	; 0xf720 <__vector_20+0x170>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f88c:	80 ec       	ldi	r24, 0xC0	; 192
-    f88e:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f888:	80 ec       	ldi	r24, 0xC0	; 192
+    f88a:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f892:	8e eb       	ldi	r24, 0xBE	; 190
-    f894:	91 e0       	ldi	r25, 0x01	; 1
-    f896:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f89a:	80 91 87 02 	lds	r24, 0x0287	; 0x800287 <animation_ctr>
-    f89e:	90 91 88 02 	lds	r25, 0x0288	; 0x800288 <animation_ctr+0x1>
-    f8a2:	a0 91 89 02 	lds	r26, 0x0289	; 0x800289 <animation_ctr+0x2>
-    f8a6:	b0 91 8a 02 	lds	r27, 0x028A	; 0x80028a <animation_ctr+0x3>
-    f8aa:	01 96       	adiw	r24, 0x01	; 1
-    f8ac:	a1 1d       	adc	r26, r1
-    f8ae:	b1 1d       	adc	r27, r1
-    f8b0:	1b cf       	rjmp	.-458    	; 0xf6e8 <__vector_20+0x168>
+    f88e:	81 ec       	ldi	r24, 0xC1	; 193
+    f890:	91 e0       	ldi	r25, 0x01	; 1
+    f892:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f896:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f89a:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f89e:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f8a2:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f8a6:	01 96       	adiw	r24, 0x01	; 1
+    f8a8:	a1 1d       	adc	r26, r1
+    f8aa:	b1 1d       	adc	r27, r1
+    f8ac:	3c cf       	rjmp	.-392    	; 0xf726 <__vector_20+0x176>
+		else																		// if error => record will be sent again, otherwise SRAM entry is correct
+			USART_transmit_string("er");
+	}
+	else if(header == usart_request_data_dump){
+		
+			sram_address = 0;
+    f8ae:	10 92 1e 03 	sts	0x031E, r1	; 0x80031e <sram_address>
+    f8b2:	10 92 1f 03 	sts	0x031F, r1	; 0x80031f <sram_address+0x1>
+    f8b6:	10 92 20 03 	sts	0x0320, r1	; 0x800320 <sram_address+0x2>
+    f8ba:	10 92 21 03 	sts	0x0321, r1	; 0x800321 <sram_address+0x3>
+			send_sram_flag = 1;
+    f8be:	81 e0       	ldi	r24, 0x01	; 1
+    f8c0:	80 93 b8 02 	sts	0x02B8, r24	; 0x8002b8 <send_sram_flag>
+    f8c4:	b0 ce       	rjmp	.-672    	; 0xf626 <__vector_20+0x76>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f8b2:	80 ec       	ldi	r24, 0xC0	; 192
-    f8b4:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f8c6:	80 ec       	ldi	r24, 0xC0	; 192
+    f8c8:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f8b8:	82 ee       	ldi	r24, 0xE2	; 226
-    f8ba:	91 e0       	ldi	r25, 0x01	; 1
-    f8bc:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-    f8c0:	80 91 87 02 	lds	r24, 0x0287	; 0x800287 <animation_ctr>
-    f8c4:	90 91 88 02 	lds	r25, 0x0288	; 0x800288 <animation_ctr+0x1>
-    f8c8:	a0 91 89 02 	lds	r26, 0x0289	; 0x800289 <animation_ctr+0x2>
-    f8cc:	b0 91 8a 02 	lds	r27, 0x028A	; 0x80028a <animation_ctr+0x3>
-    f8d0:	01 96       	adiw	r24, 0x01	; 1
-    f8d2:	a1 1d       	adc	r26, r1
-    f8d4:	b1 1d       	adc	r27, r1
-    f8d6:	08 cf       	rjmp	.-496    	; 0xf6e8 <__vector_20+0x168>
-	_delay_ms(2);
-}
-
-void LCD_Clear()
-{
-	LCD_Action (0x01);		//Clear LCD
-    f8d8:	81 e0       	ldi	r24, 0x01	; 1
-    f8da:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
-    f8de:	95 e8       	ldi	r25, 0x85	; 133
-    f8e0:	9a 95       	dec	r25
-    f8e2:	f1 f7       	brne	.-4      	; 0xf8e0 <__vector_20+0x360>
-    f8e4:	00 00       	nop
-	_delay_us(20);
-	LCD_Action (0x80);		//Move to Position Line 1, Position 1
-    f8e6:	80 e8       	ldi	r24, 0x80	; 128
-    f8e8:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
-
-
+    f8cc:	89 ed       	ldi	r24, 0xD9	; 217
+    f8ce:	91 e0       	ldi	r25, 0x01	; 1
+    f8d0:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f8d4:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f8d8:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f8dc:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f8e0:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f8e4:	01 96       	adiw	r24, 0x01	; 1
+    f8e6:	a1 1d       	adc	r26, r1
+    f8e8:	b1 1d       	adc	r27, r1
+    f8ea:	1d cf       	rjmp	.-454    	; 0xf726 <__vector_20+0x176>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
-    f8ec:	80 e8       	ldi	r24, 0x80	; 128
+	else if (row == 1 && pos<16)
+		LCD_Action((pos & 0x0F)|0xC0);
+    f8ec:	80 ec       	ldi	r24, 0xC0	; 192
     f8ee:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+	
+	LCD_Print(str);
+    f8f2:	80 ef       	ldi	r24, 0xF0	; 240
+    f8f4:	91 e0       	ldi	r25, 0x01	; 1
+    f8f6:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f8fa:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f8fe:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f902:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f906:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f90a:	0a cf       	rjmp	.-492    	; 0xf720 <__vector_20+0x170>
+		
+			for(int i = 1; i < hex_record_size ; ++i )			// get rest of message data
+				hex_buffer_array[ i ] = USART_receive_byte();
+			
+			//TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
+		     switch(animation_ctr){	// display animation, tells user all is going well
+    f90c:	81 e0       	ldi	r24, 0x01	; 1
+    f90e:	90 e0       	ldi	r25, 0x00	; 0
+    f910:	a0 e0       	ldi	r26, 0x00	; 0
+    f912:	b0 e0       	ldi	r27, 0x00	; 0
+    f914:	08 cf       	rjmp	.-496    	; 0xf726 <__vector_20+0x176>
+
+
+void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
+{
+	if (row == 0 && pos<16)
+		LCD_Action((pos & 0x0F)|0x80);
+    f916:	80 e8       	ldi	r24, 0x80	; 128
+    f918:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f8f2:	84 e2       	ldi	r24, 0x24	; 36
-    f8f4:	92 e0       	ldi	r25, 0x02	; 2
-    f8f6:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
-	#else
-		//round up by default
-		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
-	#endif
-
-	__builtin_avr_delay_cycles(__ticks_dc);
-    f8fa:	2f e7       	ldi	r18, 0x7F	; 127
-    f8fc:	89 eb       	ldi	r24, 0xB9	; 185
-    f8fe:	9a e2       	ldi	r25, 0x2A	; 42
-    f900:	21 50       	subi	r18, 0x01	; 1
-    f902:	80 40       	sbci	r24, 0x00	; 0
-    f904:	90 40       	sbci	r25, 0x00	; 0
-    f906:	e1 f7       	brne	.-8      	; 0xf900 <__vector_20+0x380>
-    f908:	00 c0       	rjmp	.+0      	; 0xf90a <__vector_20+0x38a>
-    f90a:	00 00       	nop
+    f91c:	86 e9       	ldi	r24, 0x96	; 150
+    f91e:	91 e0       	ldi	r25, 0x01	; 1
+    f920:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
+{
+	if (row == 0 && pos<16)
+		LCD_Action((pos & 0x0F)|0x80);
+	else if (row == 1 && pos<16)
+		LCD_Action((pos & 0x0F)|0xC0);
+    f924:	80 ec       	ldi	r24, 0xC0	; 192
+    f926:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+	
+	LCD_Print(str);
+    f92a:	8a ea       	ldi	r24, 0xAA	; 170
+    f92c:	91 e0       	ldi	r25, 0x01	; 1
+    f92e:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f932:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f936:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f93a:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f93e:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f942:	01 96       	adiw	r24, 0x01	; 1
+    f944:	a1 1d       	adc	r26, r1
+    f946:	b1 1d       	adc	r27, r1
+    f948:	ee ce       	rjmp	.-548    	; 0xf726 <__vector_20+0x176>
+void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
+{
+	if (row == 0 && pos<16)
+		LCD_Action((pos & 0x0F)|0x80);
+	else if (row == 1 && pos<16)
+		LCD_Action((pos & 0x0F)|0xC0);
+    f94a:	80 ec       	ldi	r24, 0xC0	; 192
+    f94c:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+	
+	LCD_Print(str);
+    f950:	89 e0       	ldi	r24, 0x09	; 9
+    f952:	92 e0       	ldi	r25, 0x02	; 2
+    f954:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f958:	80 91 bd 02 	lds	r24, 0x02BD	; 0x8002bd <animation_ctr>
+    f95c:	90 91 be 02 	lds	r25, 0x02BE	; 0x8002be <animation_ctr+0x1>
+    f960:	a0 91 bf 02 	lds	r26, 0x02BF	; 0x8002bf <animation_ctr+0x2>
+    f964:	b0 91 c0 02 	lds	r27, 0x02C0	; 0x8002c0 <animation_ctr+0x3>
+    f968:	01 96       	adiw	r24, 0x01	; 1
+    f96a:	a1 1d       	adc	r26, r1
+    f96c:	b1 1d       	adc	r27, r1
+    f96e:	db ce       	rjmp	.-586    	; 0xf726 <__vector_20+0x176>
 	_delay_ms(2);
 }
 
 void LCD_Clear()
 {
 	LCD_Action (0x01);		//Clear LCD
-    f90c:	81 e0       	ldi	r24, 0x01	; 1
-    f90e:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f970:	81 e0       	ldi	r24, 0x01	; 1
+    f972:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	#else
 		//round up by default
 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
 	#endif
 
 	__builtin_avr_delay_cycles(__ticks_dc);
-    f912:	25 e8       	ldi	r18, 0x85	; 133
-    f914:	2a 95       	dec	r18
-    f916:	f1 f7       	brne	.-4      	; 0xf914 <__vector_20+0x394>
-    f918:	00 00       	nop
+    f976:	95 e8       	ldi	r25, 0x85	; 133
+    f978:	9a 95       	dec	r25
+    f97a:	f1 f7       	brne	.-4      	; 0xf978 <__vector_20+0x3c8>
+    f97c:	00 00       	nop
 	_delay_us(20);
 	LCD_Action (0x80);		//Move to Position Line 1, Position 1
-    f91a:	80 e8       	ldi	r24, 0x80	; 128
-    f91c:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f97e:	80 e8       	ldi	r24, 0x80	; 128
+    f980:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 
 
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
-    f920:	80 e8       	ldi	r24, 0x80	; 128
-    f922:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f984:	80 e8       	ldi	r24, 0x80	; 128
+    f986:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
 	
 	LCD_Print(str);
-    f926:	88 e3       	ldi	r24, 0x38	; 56
-    f928:	92 e0       	ldi	r25, 0x02	; 2
-    f92a:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f98a:	84 e5       	ldi	r24, 0x54	; 84
+    f98c:	92 e0       	ldi	r25, 0x02	; 2
+    f98e:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+    f992:	2f e7       	ldi	r18, 0x7F	; 127
+    f994:	89 eb       	ldi	r24, 0xB9	; 185
+    f996:	9a e2       	ldi	r25, 0x2A	; 42
+    f998:	21 50       	subi	r18, 0x01	; 1
+    f99a:	80 40       	sbci	r24, 0x00	; 0
+    f99c:	90 40       	sbci	r25, 0x00	; 0
+    f99e:	e1 f7       	brne	.-8      	; 0xf998 <__vector_20+0x3e8>
+    f9a0:	00 c0       	rjmp	.+0      	; 0xf9a2 <__vector_20+0x3f2>
+    f9a2:	00 00       	nop
+	_delay_ms(2);
+}
+
+void LCD_Clear()
+{
+	LCD_Action (0x01);		//Clear LCD
+    f9a4:	81 e0       	ldi	r24, 0x01	; 1
+    f9a6:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+    f9aa:	25 e8       	ldi	r18, 0x85	; 133
+    f9ac:	2a 95       	dec	r18
+    f9ae:	f1 f7       	brne	.-4      	; 0xf9ac <__vector_20+0x3fc>
+    f9b0:	00 00       	nop
+	_delay_us(20);
+	LCD_Action (0x80);		//Move to Position Line 1, Position 1
+    f9b2:	80 e8       	ldi	r24, 0x80	; 128
+    f9b4:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+
+
+void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
+{
+	if (row == 0 && pos<16)
+		LCD_Action((pos & 0x0F)|0x80);
+    f9b8:	80 e8       	ldi	r24, 0x80	; 128
+    f9ba:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+	else if (row == 1 && pos<16)
+		LCD_Action((pos & 0x0F)|0xC0);
+	
+	LCD_Print(str);
+    f9be:	8b e6       	ldi	r24, 0x6B	; 107
+    f9c0:	92 e0       	ldi	r25, 0x02	; 2
+    f9c2:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 void LCD_Printpos (char row, char pos, char *str)  //Write on a specific location
 {
 	if (row == 0 && pos<16)
 		LCD_Action((pos & 0x0F)|0x80);
 	else if (row == 1 && pos<16)
 		LCD_Action((pos & 0x0F)|0xC0);
-    f92e:	80 ec       	ldi	r24, 0xC0	; 192
-    f930:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
+    f9c6:	80 ec       	ldi	r24, 0xC0	; 192
+    f9c8:	0e 94 5d 78 	call	0xf0ba	; 0xf0ba <LCD_Action>
 	
 	LCD_Print(str);
-    f934:	8d e4       	ldi	r24, 0x4D	; 77
-    f936:	92 e0       	ldi	r25, 0x02	; 2
-    f938:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
+    f9cc:	83 e8       	ldi	r24, 0x83	; 131
+    f9ce:	92 e0       	ldi	r25, 0x02	; 2
+    f9d0:	0e 94 a2 78 	call	0xf144	; 0xf144 <LCD_Print>
 			_delay_ms(700);
 			
 			LCD_Clear();
-			LCD_Printpos(0,0, "burning flash       ");
+			LCD_Printpos(0,0, "writing firmware       ");
 			LCD_Printpos(1,0, "don't turn off       ");
-			write_firmware_to_flash();
-    f93c:	0e 94 70 79 	call	0xf2e0	; 0xf2e0 <write_firmware_to_flash>
-    f940:	5a ce       	rjmp	.-844    	; 0xf5f6 <__vector_20+0x76>
+            flash_flag = 1;
+    f9d4:	81 e0       	ldi	r24, 0x01	; 1
+    f9d6:	80 93 c2 02 	sts	0x02C2, r24	; 0x8002c2 <flash_flag>
+    f9da:	25 ce       	rjmp	.-950    	; 0xf626 <__vector_20+0x76>
 			//AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
 			
 			uint16_t vec_sum = 0;												//local helper variable for checksum calculation
 			uint8_t checksum_from_file = hex_buffer_array[hex_record_size-1];   //read checksum from file
 		
 			for(int i = 0; i < hex_record_size - 1; ++i){						// accumulate record for checksum calculation
-    f942:	40 e0       	ldi	r20, 0x00	; 0
-    f944:	f3 ce       	rjmp	.-538    	; 0xf72c <__vector_20+0x1ac>
+    f9dc:	40 e0       	ldi	r20, 0x00	; 0
+    f9de:	c5 ce       	rjmp	.-630    	; 0xf76a <__vector_20+0x1ba>
 
-0000f946 <strcmp>:
-    f946:	fb 01       	movw	r30, r22
-    f948:	dc 01       	movw	r26, r24
-    f94a:	8d 91       	ld	r24, X+
-    f94c:	01 90       	ld	r0, Z+
-    f94e:	80 19       	sub	r24, r0
-    f950:	01 10       	cpse	r0, r1
-    f952:	d9 f3       	breq	.-10     	; 0xf94a <strcmp+0x4>
-    f954:	99 0b       	sbc	r25, r25
-    f956:	08 95       	ret
+0000f9e0 <strcmp>:
+    f9e0:	fb 01       	movw	r30, r22
+    f9e2:	dc 01       	movw	r26, r24
+    f9e4:	8d 91       	ld	r24, X+
+    f9e6:	01 90       	ld	r0, Z+
+    f9e8:	80 19       	sub	r24, r0
+    f9ea:	01 10       	cpse	r0, r1
+    f9ec:	d9 f3       	breq	.-10     	; 0xf9e4 <strcmp+0x4>
+    f9ee:	99 0b       	sbc	r25, r25
+    f9f0:	08 95       	ret
 
-0000f958 <_exit>:
-    f958:	f8 94       	cli
+0000f9f2 <_exit>:
+    f9f2:	f8 94       	cli
 
-0000f95a <__stop_program>:
-    f95a:	ff cf       	rjmp	.-2      	; 0xf95a <__stop_program>
+0000f9f4 <__stop_program>:
+    f9f4:	ff cf       	rjmp	.-2      	; 0xf9f4 <__stop_program>
