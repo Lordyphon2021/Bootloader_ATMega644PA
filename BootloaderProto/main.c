@@ -204,8 +204,6 @@ uint8_t SPI_SRAM_ByteRead(uint32_t sram_address)
 }
 
 
-
-
 //USART INTERFACE INITIALISATION
 void USART_Init( uint16_t ubrr)
 {
@@ -250,11 +248,6 @@ uint8_t USART_receive_byte(void)
 
 void (*start)(  ) = 0x0000;  //jump to main app
 
-
-
-
-
-
 //if all checksums are correct, this is called to copy the firmware from sram to boot section
 void write_firmware_to_flash()
 {
@@ -263,9 +256,10 @@ void write_firmware_to_flash()
     uint32_t flash_address = 0;
     const uint32_t app_section_eof = 61440; //next address is bootloader-section!!!
     cli();
-     boot_rww_enable();
+    boot_rww_enable();
      
-    while(sram_address < app_section_eof ){  //write complete app section
+    while(sram_address < app_section_eof )  //write complete app section
+    {  
         
         boot_page_erase_safe(sram_address) ; //AVR-MACROS, not functions
         boot_spm_busy_wait();  
@@ -292,20 +286,12 @@ void write_firmware_to_flash()
     LCD_Printpos(0,0, "rebooting");
     LCD_Printpos(1,0, "lordyphon      ");
     _delay_ms(1000);
-    
-    
-    
-
-        
 }
 
 //MAIN FUNCTION
 
 int main(void)
 {
-    
-    
-    
     unsigned char temp;       
            
     //SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
@@ -331,11 +317,8 @@ int main(void)
     
     sei();
     
-    
-    
-    
-    if(rec_button){   //boot section only entered if REC button is pressed during power-up
-        
+    if(rec_button)    //boot section only entered if REC button is pressed during power-up
+    {   
         // set interrupt vector for boot section
         char sregtemp = SREG;
         temp = MCUCR;
@@ -347,10 +330,10 @@ int main(void)
         LCD_Printpos(1, 0, "start lordylink      " );
         
         while(1)  //main loop
-        {
-                
+        {     
             //HANDSHAKE CALL EVALUATION
-            if(strcmp(handshake_array, handshake_call) == 0){  //if call is correct, response will be sent
+            if(strcmp(handshake_array, handshake_call) == 0)   //if call is correct, response will be sent
+            { 
                 _delay_ms(200);	                               //give lordylink some time for startup
                 USART_transmit_string(handshake_response);
                 strcpy(handshake_array, "                ");   //delete input buffer            
@@ -359,38 +342,31 @@ int main(void)
             }
             _delay_ms(100);
             //UPDATE CALL EVALUATION
-            if(strcmp(update_array, update_call) == 0){  //if call is correct, response will be sent
+            if(strcmp(update_array, update_call) == 0)        //if call is correct, response will be sent
+            {  
                 _delay_ms(200);								 
                 USART_transmit_string(update_response);
-                strcpy(update_array, "     ");   //overwrite input buffer
+                strcpy(update_array, "     ");                 //overwrite input buffer
                 LCD_Printpos(0,0, "updater          ");
                 LCD_Printpos(1,0, "enabled          ");
                 
             }
             if(flash_flag == 1)
             {
-                write_firmware_to_flash();
-                
-                
+                write_firmware_to_flash();                    //flash app section
                 cli();
-                temp = MCUCR;
+                temp = MCUCR;                                 //reset interrupt vector
                 MCUCR = temp | (1<<IVCE);
                 MCUCR = temp & ~(1<<IVSEL);
-                
-                
-                start();
-                
-            }                
-            
+                start();                                      //jump to application section
+            }   
         } //end while(1) 
     
-    }else{  // go directly to app section
-    
-        start();
-    
     }
-    
-
+    else  // go directly to app section
+    { 
+        start();
+    }
 } // end main 
 
 //Interrupt Service Routine is in sleep mode unless USART message is received
@@ -401,10 +377,12 @@ ISR(USART0_RX_vect)
     
     //HANDSHAKE MESSAGE
     
-    if (header == usart_handshake_message){  // if incoming data is of handshake type...
+    if (header == usart_handshake_message)// if incoming data is handshake type...
+    {  
         for(uint8_t i = 0; i < 16; ++i)
-            handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
-        
+        {
+            handshake_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop    
+        }  
     }
     //HEXFILE MESSAGE - INCOMING RECORD
     
@@ -414,7 +392,8 @@ ISR(USART0_RX_vect)
     //IF CONFIRMATION IS "er", LORDYLINK SENDS CURRENT RECORD AGAIN, EVALUATION STARTS FROM THE TOP
     //IF CONFIRMATION MESSAGE ISN'T RECOGNIZED BY LORDYLINK, CHECKSUM STATUS WILL BE RE-EVALUATED AND CONFIRMATION MESSAGE IS TRANSMITTED AGAIN.
     
-    else if(header == usart_hexfile_message){   //if message is hexfile....
+    else if(header == usart_hexfile_message) //if message is hexfile....
+    {  
             ++record_ctr;  //keep track...
             //PARSE INCOMING MESSAGE
     
@@ -424,29 +403,32 @@ ISR(USART0_RX_vect)
             hex_buffer_array[0] = data_section_size;            //buffer starts with data_section_size, header ':' will be discarded
         
             for(int i = 1; i < hex_record_size ; ++i )          // get rest of message data
-                hex_buffer_array[ i ] = USART_receive_byte();
-            
+            {
+                hex_buffer_array[ i ] = USART_receive_byte();    
+            }                
+             
             //TRANSMISSION IS NOW COMPLETED AND STORED IN BUFFER
-             switch(animation_ctr){	// display animation, tells user all is going well
+             switch(animation_ctr)  // display animation
+             {	
                  case 1:
-                 LCD_Printpos(0,0, "receiving data     ");
-                 LCD_Printpos(1,0, "...                   ");
+                 LCD_Printpos(0,0, "receiving data  ");
+                 LCD_Printpos(1,0, "...             ");
                  break;
              
                  case 100:
-                 LCD_Printpos(1,0, "   ...                 ");
+                 LCD_Printpos(1,0, "   ...          ");
                  break;
              
                  case 200:
-                 LCD_Printpos(1,0, "      ...             ");
+                 LCD_Printpos(1,0, "      ...       ");
                  break;
                  
                  case 300:
-                 LCD_Printpos(1,0, "         ...            ");
+                 LCD_Printpos(1,0, "         ...    ");
                  break;
                  
                  case 400:
-                 LCD_Printpos(1,0, "            ...          ");
+                 LCD_Printpos(1,0, "            ... ");
                  break;
              
                  case 500:
@@ -459,19 +441,21 @@ ISR(USART0_RX_vect)
             //AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
             
             uint16_t vec_sum = 0;                                               //local helper variable for checksum calculation
-            uint8_t checksum_from_file = hex_buffer_array[hex_record_size-1];   //read checksum from file
+            uint8_t checksum_from_file = hex_buffer_array[hex_record_size - 1]; //read checksum from file
         
-            for(int i = 0; i < hex_record_size - 1; ++i){                       // accumulate record for checksum calculation
+            for(int i = 0; i < hex_record_size - 1; ++i)                        // accumulate record for checksum calculation
+            {                      
                 vec_sum += hex_buffer_array[ i ];
-                
             }            
+            
             uint8_t checksum_calculated =  ~(vec_sum & 0x00ff ) + 0x01;	        // actual checksum calculation
         
-            if(checksum_calculated == checksum_from_file ){	                    // compare checksums
+            if(checksum_calculated == checksum_from_file )                      // compare checksums
+            {	                    
                 checksum_status = is_ok;                                        // set boolean flag for error handling
                 
-                for(int i = 0; i < data_section_size; ++i){	                    //if checksum is ok, write data-section to SRAM
-                    
+                for(int i = 0; i < data_section_size; ++i)                      //if checksum is ok, write data-section to SRAM
+                {	 
                     do{
                         SPI_SRAM_ByteWrite(address, hex_buffer_array[ i + 4 ]);	
                     
@@ -485,10 +469,11 @@ ISR(USART0_RX_vect)
                                                             //to reevaluate checksum via flag variable "checksum_status"
             }//end if(checksum calculated....	
             
-            else if( checksum_calculated != checksum_from_file){
-            checksum_status = is_error;	                                      // error, same record will be sent again
+            else if( checksum_calculated != checksum_from_file)
+            {
+                checksum_status = is_error;	                                  // error, same record will be sent again
                 LCD_Printpos(0,0,"checksum error!      ");                    //LCD user feedback
-                LCD_Printpos(1,0,"trying again......  ");
+                LCD_Printpos(1,0,"trying again......   ");
                 
                 _delay_ms(100);
                 
@@ -502,40 +487,42 @@ ISR(USART0_RX_vect)
     
     //THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
     
-    else if(header == usart_rx_error_hexrecord){                                    //lordylink didn't "understand" last confirmation	
+    else if(header == usart_rx_error_hexrecord)            //lordylink didn't "understand" last confirmation	
+    {                                  
         
-        if(checksum_status == is_ok)                                                // evaluating last checksum again...
-            USART_transmit_string("ok");	
-            
-        else                                                                        // if error => record will be sent again, otherwise SRAM entry is correct
+        if(checksum_status == is_ok)                       // evaluating last checksum again...
+        {
+            USART_transmit_string("ok");	    
+        }
+        else                                               // if error => record will be sent again, otherwise SRAM entry is correct
+        {
             USART_transmit_string("er");
+        }            
     }
-    else if(header == usart_request_data_dump){
-        
+    else if(header == usart_request_data_dump)
+    { 
             sram_address = 0;
             send_sram_flag = 1;
-        
     }
-    
-    else if(header == usart_hexfile_send_complete){	                            //hexfile transfer is complete
+    else if(header == usart_hexfile_send_complete)          //hexfile transfer is complete
+    {	                           
             LCD_Clear();
-            LCD_Printpos(0,0, "complete              ");
+            LCD_Printpos(0,0, "complete               ");
             _delay_ms(700);
             
             LCD_Clear();
             LCD_Printpos(0,0, "writing firmware       ");
-            LCD_Printpos(1,0, "don't turn off       ");
-            flash_flag = 1;
-            
-            //start();
+            LCD_Printpos(1,0, "don't turn off         ");
+            flash_flag = 1; 
     }    
     
-    else if (header == usart_update_message){  // if incoming data is an update handshake 
+    else if (header == usart_update_message)               // if incoming data is an update handshake 
+    {  
         for(int i = 0; i < 5; ++i)
-            update_array[i] = USART_receive_byte();  //read handshake call, if correct: response will be sent from main loop
-    
+        {
+            update_array[i] = USART_receive_byte();        //read handshake call, if correct: response will be sent from main loop    
+        } 
     }
-    
 }
  
  

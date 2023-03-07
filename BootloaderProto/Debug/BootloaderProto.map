@@ -386,7 +386,7 @@ END GROUP
  *(.fini0)
                 0x0000f9f6                _etext = .
 
-.data           0x00800100      0x1b6 load address 0x0000f9f6
+.data           0x00800100      0x1a4 load address 0x0000f9f6
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
@@ -397,70 +397,70 @@ END GROUP
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800106      0x193 main.o
-                                0x1aa (size before relaxing)
+                0x00800106      0x181 main.o
+                                0x187 (size before relaxing)
  .rodata.update_response
-                0x00800299        0x5 main.o
-                0x00800299                update_response
+                0x00800287        0x5 main.o
+                0x00800287                update_response
  .rodata.handshake_response
-                0x0080029e        0x6 main.o
-                0x0080029e                handshake_response
+                0x0080028c        0x6 main.o
+                0x0080028c                handshake_response
  .rodata.handshake_call
-                0x008002a4       0x11 main.o
-                0x008002a4                handshake_call
+                0x00800292       0x11 main.o
+                0x00800292                handshake_call
  *(.gnu.linkonce.r*)
-                0x008002b6                . = ALIGN (0x2)
- *fill*         0x008002b5        0x1 
-                0x008002b6                _edata = .
-                0x008002b6                PROVIDE (__data_end, .)
+                0x008002a4                . = ALIGN (0x2)
+ *fill*         0x008002a3        0x1 
+                0x008002a4                _edata = .
+                0x008002a4                PROVIDE (__data_end, .)
 
-.bss            0x008002b6       0x6d
-                0x008002b6                PROVIDE (__bss_start, .)
+.bss            0x008002a4       0x6d
+                0x008002a4                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
- .bss.start     0x008002b6        0x2 main.o
-                0x008002b6                start
+ .bss.start     0x008002a4        0x2 main.o
+                0x008002a4                start
  .bss.send_sram_flag
-                0x008002b8        0x1 main.o
-                0x008002b8                send_sram_flag
+                0x008002a6        0x1 main.o
+                0x008002a6                send_sram_flag
  .bss.record_ctr
-                0x008002b9        0x4 main.o
-                0x008002b9                record_ctr
+                0x008002a7        0x4 main.o
+                0x008002a7                record_ctr
  .bss.animation_ctr
-                0x008002bd        0x4 main.o
-                0x008002bd                animation_ctr
+                0x008002ab        0x4 main.o
+                0x008002ab                animation_ctr
  .bss.checksum_status
-                0x008002c1        0x1 main.o
-                0x008002c1                checksum_status
+                0x008002af        0x1 main.o
+                0x008002af                checksum_status
  .bss.flash_flag
-                0x008002c2        0x1 main.o
-                0x008002c2                flash_flag
+                0x008002b0        0x1 main.o
+                0x008002b0                flash_flag
  .bss.hex_buffer_array
-                0x008002c3       0x40 main.o
-                0x008002c3                hex_buffer_array
+                0x008002b1       0x40 main.o
+                0x008002b1                hex_buffer_array
  .bss.update_array
-                0x00800303        0x6 main.o
-                0x00800303                update_array
+                0x008002f1        0x6 main.o
+                0x008002f1                update_array
  .bss.handshake_array
-                0x00800309       0x11 main.o
-                0x00800309                handshake_array
- .bss.address   0x0080031a        0x4 main.o
-                0x0080031a                address
+                0x008002f7       0x11 main.o
+                0x008002f7                handshake_array
+ .bss.address   0x00800308        0x4 main.o
+                0x00800308                address
  .bss.sram_address
-                0x0080031e        0x4 main.o
-                0x0080031e                sram_address
- .bss.header    0x00800322        0x1 main.o
-                0x00800322                header
+                0x0080030c        0x4 main.o
+                0x0080030c                sram_address
+ .bss.header    0x00800310        0x1 main.o
+                0x00800310                header
  *(COMMON)
-                0x00800323                PROVIDE (__bss_end, .)
+                0x00800311                PROVIDE (__bss_end, .)
                 0x0000f9f6                __data_load_start = LOADADDR (.data)
-                0x0000fbac                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x0000fb9a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800323        0x0
+.noinit         0x00800311        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800323                _end = .
+                0x00800311                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
@@ -533,20 +533,20 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x1e3a
+.debug_info     0x00000000     0x1e38
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x6cc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
- .debug_info    0x000006cc     0x176e main.o
+ .debug_info    0x000006cc     0x176c main.o
 
-.debug_abbrev   0x00000000      0xa17
+.debug_abbrev   0x00000000      0xa26
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x66e C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
- .debug_abbrev  0x0000066e      0x3a9 main.o
+ .debug_abbrev  0x0000066e      0x3b8 main.o
 
-.debug_line     0x00000000      0xb34
+.debug_line     0x00000000      0xb36
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x151 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega644pa/avr5/crtatmega644pa.o
- .debug_line    0x00000151      0x9e3 main.o
+ .debug_line    0x00000151      0x9e5 main.o
 
 .debug_frame    0x00000000      0x1fc
  *(.debug_frame)
