@@ -18,6 +18,7 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>	
 #include <avr/boot.h>
+#include <avr/wdt.h>
 #include <avr/pgmspace.h>
 #include <avr/sleep.h> 
 #include <string.h>
@@ -64,7 +65,7 @@ volatile _Bool checksum_status = is_error;
 uint32_t animation_ctr = 0;
 volatile uint32_t record_ctr = 0;
 _Bool send_sram_flag = 0;
-
+uint32_t longpressctr = 0;
 
 //DEFINES FOR ATMEGA PORTS AND PINS
 #define LCD_Port PORTC    //Define LCD Port
@@ -260,7 +261,7 @@ void write_firmware_to_flash()
      
     while(sram_address < app_section_eof )  //write complete app section
     {  
-        
+        wdt_reset();
         boot_page_erase_safe(sram_address) ; //AVR-MACROS, not functions
         boot_spm_busy_wait();  
         
@@ -280,19 +281,34 @@ void write_firmware_to_flash()
     
     boot_rww_enable ();
     
+    
+    
     sram_address = 0;
     _delay_ms(100);
     LCD_Clear();
-    LCD_Printpos(0,0, "rebooting");
-    LCD_Printpos(1,0, "lordyphon      ");
+    LCD_Printpos(0,0, "update done.        ");
+    LCD_Printpos(1,0, "rebooting...        ");
     _delay_ms(1000);
+}
+
+
+
+
+void watchdogSetup(void){
+    cli(); // disable all interrupts
+    asm("WDR");
+    WDTCSR |= (1<<WDCE) | (1<<WDE);
+    WDTCSR = (1<<WDIE) | (1<<WDE) | (1<<WDP1)| (1<<WDP2); 
+    sei();
 }
 
 //MAIN FUNCTION
 
 int main(void)
 {
-    unsigned char temp;       
+    unsigned char temp; 
+    
+    watchdogSetup();      
            
     //SET ATMEGA PORTS/PINS TO IN- OR OUTPUTS
     PINA = 0x00;
@@ -312,25 +328,59 @@ int main(void)
     LCD_Init();	                                
     _delay_ms(500);
     
-    
     //ACTIVATE INTERRUPT
     
     sei();
     
+    
+    wdt_reset();
+    //LCD_Printpos(0, 0, "updater: "  );
+    //LCD_Printpos(1, 0, "press record "  );
+    //_delay_ms(1000);
+    
     if(rec_button)    //boot section only entered if REC button is pressed during power-up
     {   
+        
+        //wdt_reset();
+        cli();
         // set interrupt vector for boot section
         char sregtemp = SREG;
         temp = MCUCR;
         MCUCR = temp | (1<<IVCE);
         MCUCR = temp | (1<<IVSEL);
-        SREG = sregtemp;	
-        
+        SREG = sregtemp;
+        sei();
+       
+        LCD_Printpos(0, 0, "release buttons    "  );
+        LCD_Printpos(1, 0, "                 "  );
+        _delay_ms(1000);
         LCD_Printpos(0, 0, "updater ready      "  );
         LCD_Printpos(1, 0, "start lordylink      " );
         
+        //wdt_enable(WDTO_30MS);
+        //wdt_reset();
         while(1)  //main loop
-        {     
+        {  
+            
+            wdt_reset();
+            if( rec_button )
+           
+            {
+             
+                
+                LCD_Printpos(0, 0, "exit updater         "  );
+                LCD_Printpos(1, 0, "rebooting...               " );
+                //_delay_ms(1000);
+                
+                cli();
+                temp = MCUCR;                                 //reset interrupt vector
+                MCUCR = temp | (1<<IVCE);
+                MCUCR = temp & ~(1<<IVSEL);
+                while(1){}
+                
+                    
+
+            } 
             //HANDSHAKE CALL EVALUATION
             if(strcmp(handshake_array, handshake_call) == 0)   //if call is correct, response will be sent
             { 
@@ -358,7 +408,7 @@ int main(void)
                 temp = MCUCR;                                 //reset interrupt vector
                 MCUCR = temp | (1<<IVCE);
                 MCUCR = temp & ~(1<<IVSEL);
-                start();                                      //jump to application section
+                while(1){}                                     //jump to application section
             }   
         } //end while(1) 
     
@@ -411,7 +461,7 @@ ISR(USART0_RX_vect)
              switch(animation_ctr)  // display animation
              {	
                  case 1:
-                 LCD_Printpos(0,0, "receiving data  ");
+                 LCD_Printpos(0,0, "reading data  ");
                  LCD_Printpos(1,0, "...             ");
                  break;
              
@@ -507,11 +557,12 @@ ISR(USART0_RX_vect)
     else if(header == usart_hexfile_send_complete)          //hexfile transfer is complete
     {	                           
             LCD_Clear();
-            LCD_Printpos(0,0, "complete               ");
+            LCD_Printpos(0,0, "checksums ok         ");
+            LCD_Printpos(1,0, "file complete      ");
             _delay_ms(700);
             
             LCD_Clear();
-            LCD_Printpos(0,0, "writing firmware       ");
+            LCD_Printpos(0,0, "burning flash        ");
             LCD_Printpos(1,0, "don't turn off         ");
             flash_flag = 1; 
     }    
