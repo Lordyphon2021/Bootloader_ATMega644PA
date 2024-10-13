@@ -292,15 +292,15 @@ void write_firmware_to_flash()
 }
 
 
-
-
 void watchdogSetup(void){
-    cli(); // disable all interrupts
-    asm("WDR");
-    WDTCSR |= (1<<WDCE) | (1<<WDE);
-    WDTCSR = (1<<WDIE) | (1<<WDE) | (1<<WDP1)| (1<<WDP2); 
+    cli(); 
+    wdt_reset();
+    WDTCSR |= (1<<WDCE) | (1<<WDE); // WDCE: Watchdog CHange Enable 
+    WDTCSR = (1<<WDIE) | (1<<WDE) | (1<<WDP1)| (1<<WDP2); //WDIE: Interrupt Enable, WDE: System Reset Enable
     sei();
 }
+
+//wdt_disable(); // disable watchdog
 
 //MAIN FUNCTION
 
@@ -323,7 +323,7 @@ int main(void)
     PORTA = 13;  // set address for record button
     
     //INIT INTERFACES 
-    USART_Init(21);  // UBRR = (F_CPU/(16*BAUD))-1   // initialize with correct baud rate
+    USART_Init(10);  // UBRR = (F_CPU/(16*BAUD))-1   // initialize with correct baud rate
     SPI_MasterInit();
     LCD_Init();	                                
     _delay_ms(500);
@@ -332,17 +332,13 @@ int main(void)
     
     sei();
     
-    
     wdt_reset();
-    //LCD_Printpos(0, 0, "updater: "  );
-    //LCD_Printpos(1, 0, "press record "  );
-    //_delay_ms(1000);
     
     if(rec_button)    //boot section only entered if REC button is pressed during power-up
     {   
         
-        //wdt_reset();
         cli();
+        
         // set interrupt vector for boot section
         char sregtemp = SREG;
         temp = MCUCR;
@@ -357,29 +353,20 @@ int main(void)
         LCD_Printpos(0, 0, "updater ready      "  );
         LCD_Printpos(1, 0, "start lordylink      " );
         
-        //wdt_enable(WDTO_30MS);
-        //wdt_reset();
-        while(1)  //main loop
+        while(1)  //boot main loop
         {  
-            
             wdt_reset();
+            
             if( rec_button )
-           
-            {
-             
-                
+            {  
                 LCD_Printpos(0, 0, "exit updater         "  );
-                LCD_Printpos(1, 0, "rebooting...               " );
-                //_delay_ms(1000);
+                LCD_Printpos(1, 0, "rebooting...          " );
                 
                 cli();
                 temp = MCUCR;                                 //reset interrupt vector
                 MCUCR = temp | (1<<IVCE);
                 MCUCR = temp & ~(1<<IVSEL);
-                while(1){}
-                
-                    
-
+                while(1){} // force watchdog reset
             } 
             //HANDSHAKE CALL EVALUATION
             if(strcmp(handshake_array, handshake_call) == 0)   //if call is correct, response will be sent
@@ -391,6 +378,7 @@ int main(void)
                 LCD_Printpos(1,0, "connected          ");
             }
             _delay_ms(100);
+            
             //UPDATE CALL EVALUATION
             if(strcmp(update_array, update_call) == 0)        //if call is correct, response will be sent
             {  
@@ -408,7 +396,8 @@ int main(void)
                 temp = MCUCR;                                 //reset interrupt vector
                 MCUCR = temp | (1<<IVCE);
                 MCUCR = temp & ~(1<<IVSEL);
-                while(1){}                                     //jump to application section
+                
+                while(1){}                                    //force watchdog timeout, jump to application section
             }   
         } //end while(1) 
     
@@ -461,12 +450,12 @@ ISR(USART0_RX_vect)
              switch(animation_ctr)  // display animation
              {	
                  case 1:
-                 LCD_Printpos(0,0, "reading data  ");
-                 LCD_Printpos(1,0, "...             ");
+                 LCD_Printpos(0,0, "reading firmware  ");
+                 LCD_Printpos(1,0, "...           ");
                  break;
              
                  case 100:
-                 LCD_Printpos(1,0, "   ...          ");
+                 LCD_Printpos(1,0, "   ...         ");
                  break;
              
                  case 200:
@@ -487,13 +476,14 @@ ISR(USART0_RX_vect)
              }//end switch
          
              animation_ctr++;
+            
             //THIS PART CALCULATES CHECKSUM FROM MESSAGE
             //AND COMPARES IT TO THE CHECKSUM IN THE HEX-RECORD
             
             uint16_t vec_sum = 0;                                               //local helper variable for checksum calculation
             uint8_t checksum_from_file = hex_buffer_array[hex_record_size - 1]; //read checksum from file
         
-            for(int i = 0; i < hex_record_size - 1; ++i)                        // accumulate record for checksum calculation
+            for(int i = 0; i < hex_record_size - 1; ++i )                       // accumulate record for checksum calculation
             {                      
                 vec_sum += hex_buffer_array[ i ];
             }            
@@ -502,7 +492,7 @@ ISR(USART0_RX_vect)
         
             if(checksum_calculated == checksum_from_file )                      // compare checksums
             {	                    
-                checksum_status = is_ok;                                        // set boolean flag for error handling
+                checksum_status = is_ok;                                        // set flag for error handling
                 
                 for(int i = 0; i < data_section_size; ++i)                      //if checksum is ok, write data-section to SRAM
                 {	 
@@ -512,7 +502,6 @@ ISR(USART0_RX_vect)
                     }while(SPI_SRAM_ByteRead(address) !=  hex_buffer_array[ i + 4 ]);  //additional safety-guard: write to address and read content back. if this doesn't work, sram is probably broken
                 
                     ++address;	
-                        
                 }//end for
                 USART_transmit_string("ok");                // confirm transmission: lordylink thread blocks until confirmation is either "ok" or "er". checksum "ok" => SRAM will be written, next record will be sent
                                                             // "er" => current record will be sent again. if neither "ok" nor "er" is detected by lordylink, rx_error_header will be sent
@@ -530,9 +519,6 @@ ISR(USART0_RX_vect)
                 animation_ctr  = 0;
                 USART_transmit_string("er");                                        
             }
-            
-           
-    
     } // end else if(header == usart_hexfile_message)
     
     //THIS MESSAGE HEADER INDICATES THAT HEXFILE CONFIRMATION MESSAGE WASN'T RECOGNIZED BY LORDYLINK
